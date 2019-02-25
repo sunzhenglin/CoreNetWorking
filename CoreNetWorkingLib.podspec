@@ -7,8 +7,8 @@
 #
 
 Pod::Spec.new do |s|
-  s.name             = 'CoreNetWorking'
-  s.version          = '0.1.3'
+  s.name             = 'CoreNetWorkingLib'
+  s.version          = '0.2.0'
   s.summary          = 'A short description of CoreNetWorking.'
 
 # This description is used to generate tags and improve search results.
@@ -21,19 +21,19 @@ Pod::Spec.new do |s|
 TODO: Add long description of the pod here.
                        DESC
 
-  s.homepage         = 'https://github.com/sunzhenglin/CoreNetWorking'
+  s.homepage         = 'https://github.com/sunzhenglin/CoreNetWorkingLib'
   # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { 'acct<blob>=0xE7A9BAE781B5E699BAE883BD' => '393992811@qq.com' }
-  s.source           = { :git => 'https://github.com/sunzhenglin/CoreNetWorking.git', :tag => s.version.to_s }
+  s.source           = { :git => 'https://github.com/sunzhenglin/CoreNetWorkingLib.git', :tag => s.version.to_s }
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
   s.ios.deployment_target = '8.0'
 
-   s.source_files = 'CoreNetWorking/Classes/**/*.{h,m}'
+   s.source_files = 'CoreNetWorkingLib/Classes/**/*.{h,m}'
   
 #  s.resource_bundles = {
-#    'CoreNetWorking' => ['CoreNetWorking/Classes/**/*.{png,xib}']
+#    'CoreNetWorking' => ['CoreNetWorkingLib/Classes/**/*.{png,xib}']
 #  }
 
   # s.public_header_files = 'Pod/Classes/**/*.h'

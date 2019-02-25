@@ -3,11 +3,6 @@ use_frameworks!
 platform :ios, '8.0'
 
 target 'CoreNetWorking_Example' do
-  pod 'CoreNetWorking', :path => '../'
-
-  target 'CoreNetWorking_Tests' do
-    inherit! :search_paths
-
-    
-  end
+  pod 'CoreNetWorkingLib', :path => '../'
+ 
 end

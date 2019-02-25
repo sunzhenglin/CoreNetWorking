@@ -154,13 +154,13 @@ strip_invalid_archs() {
 
 if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/CoreNetWorking/CoreNetWorking.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/CoreNetWorkingLib/CoreNetWorkingLib.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/SVProgressHUD/SVProgressHUD.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/TXModel/TXModel.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/CoreNetWorking/CoreNetWorking.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/CoreNetWorkingLib/CoreNetWorkingLib.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/SVProgressHUD/SVProgressHUD.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/TXModel/TXModel.framework"
 fi

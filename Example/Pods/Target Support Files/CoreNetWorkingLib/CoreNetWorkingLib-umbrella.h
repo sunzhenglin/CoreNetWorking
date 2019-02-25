@@ -18,6 +18,6 @@
 #import "TXNetWorking.h"
 #import "TXNetworkStatusDelegate.h"
 
-FOUNDATION_EXPORT double CoreNetWorkingVersionNumber;
-FOUNDATION_EXPORT const unsigned char CoreNetWorkingVersionString[];
+FOUNDATION_EXPORT double CoreNetWorkingLibVersionNumber;
+FOUNDATION_EXPORT const unsigned char CoreNetWorkingLibVersionString[];
 
