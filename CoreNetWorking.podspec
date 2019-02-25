@@ -32,9 +32,9 @@ TODO: Add long description of the pod here.
 
    s.source_files = 'CoreNetWorking/Classes/**/*.{h,m}'
   
-  s.resource_bundles = {
-    'CoreNetWorking' => ['CoreNetWorking/Classes/**/*.{png,xib}']
-  }
+#  s.resource_bundles = {
+#    'CoreNetWorking' => ['CoreNetWorking/Classes/**/*.{png,xib}']
+#  }
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
   # s.frameworks = 'UIKit', 'MapKit'
