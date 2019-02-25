@@ -1,0 +1,6 @@
+framework module CoreNetWorking {
+  umbrella header "CoreNetWorking-umbrella.h"
+
+  export *
+  module * { export * }
+}

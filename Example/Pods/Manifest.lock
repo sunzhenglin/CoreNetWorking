@@ -1,0 +1,45 @@
+PODS:
+  - AFNetworking (3.2.1):
+    - AFNetworking/NSURLSession (= 3.2.1)
+    - AFNetworking/Reachability (= 3.2.1)
+    - AFNetworking/Security (= 3.2.1)
+    - AFNetworking/Serialization (= 3.2.1)
+    - AFNetworking/UIKit (= 3.2.1)
+  - AFNetworking/NSURLSession (3.2.1):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/Reachability (3.2.1)
+  - AFNetworking/Security (3.2.1)
+  - AFNetworking/Serialization (3.2.1)
+  - AFNetworking/UIKit (3.2.1):
+    - AFNetworking/NSURLSession
+  - CoreNetWorking (0.1.0):
+    - AFNetworking (~> 3.2.1)
+    - SVProgressHUD (~> 2.2.5)
+    - TXModel (~> 1.0.1)
+  - SVProgressHUD (2.2.5)
+  - TXModel (1.0.1)
+
+DEPENDENCIES:
+  - CoreNetWorking (from `../`)
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - AFNetworking
+    - SVProgressHUD
+    - TXModel
+
+EXTERNAL SOURCES:
+  CoreNetWorking:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  AFNetworking: b6f891fdfaed196b46c7a83cf209e09697b94057
+  CoreNetWorking: 4a82839cb1b5601ce086744e57679b28531ac8f7
+  SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
+  TXModel: 116bca2566ae582e273af09448af4a617b1bf050
+
+PODFILE CHECKSUM: a9377315da891c8e4955a26f1fb83228e7c249c1
+
+COCOAPODS: 1.6.0

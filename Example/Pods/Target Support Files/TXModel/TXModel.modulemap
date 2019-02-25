@@ -1,0 +1,6 @@
+framework module TXModel {
+  umbrella header "TXModel-umbrella.h"
+
+  export *
+  module * { export * }
+}
