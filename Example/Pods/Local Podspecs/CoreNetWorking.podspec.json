@@ -19,11 +19,6 @@
     "ios": "8.0"
   },
   "source_files": "CoreNetWorking/Classes/**/*.{h,m}",
-  "resource_bundles": {
-    "CoreNetWorking": [
-      "CoreNetWorking/Classes/**/*.{png,xib}"
-    ]
-  },
   "dependencies": {
     "AFNetworking": [
       "~> 3.2.1"
