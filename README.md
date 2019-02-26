@@ -142,10 +142,19 @@ typedef NS_ENUM(NSInteger,NWShowHUDType){
         NSString * msg=@"密码不能为空";
         if (self.completionHandler) self.completionHandler([NSError errorWithDomain:@"KLLogInRegisterViewModelError" code:-1004 userInfo:@{@"msg":msg}],nil);
     }else{
-        
+        [parameters setValue:account forKey:@"account"];
+        [parameters setValue:verificationCode forKey:@"vcode"];
+        [parameters setValue:password forKey:@"pwd"];
+        [TXNetWorking post:HTTP_API(@"user/login.do") parameters:parameters showHUD:NO completionHandler:^(NSError *error, TXNetModel *netModel) {
+            if (!error) {
+                if (self.completionHandler) self.completionHandler(error,netModel);
+            }else{
+                NSString * msg=@"登录失败";
+                if (self.completionHandler) self.completionHandler([NSError errorWithDomain:@"KLLogInRegisterViewModelError" code:-1005 userInfo:@{@"msg":msg}],netModel);
+            }
+        }];
     }
 }
-
 ```
 * 使用示例:
 ```objc
@@ -153,9 +162,12 @@ typedef NS_ENUM(NSInteger,NWShowHUDType){
     [super viewDidLoad];
     /** 登录接口演示 */
     NSMutableDictionary *parameters=[NSMutableDictionary dictionary];
-    [parameters setValue:@"账号" forKey:@"account"];
-    [parameters setValue:@"验证码" forKey:@"vcode"];
-    [TXNetWorking post:@"请求接口" parameters:parameters showHUD:YES completionHandler:^(NSError *error, TXNetModel *netModel) {
+    [parameters setValue:@"15934862072" forKey:@"account"];
+    [parameters setValue:@"666666" forKey:@"vcode"];
+    [parameters setValue:@"1" forKey:@"pwd"];
+    // 注意:“HTTP_API(@"user/login.do")”这个是登录接口
+    // 注意:“parameters”这个是请求参数 
+    [TXNetWorking post:HTTP_API(@"user/login.do") parameters:parameters showHUD:YES completionHandler:^(NSError *error, TXNetModel *netModel) {
         if (!error) {
             //登录成功
         }else{
