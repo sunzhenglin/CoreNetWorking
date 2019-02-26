@@ -119,100 +119,50 @@ typedef NS_ENUM(NSInteger,NWShowHUDType){
   completionHandler:(NWCompletionHandler)completionHandler;
 ```
 ### 使用方法
-* 创建模型时继承TXModel类
+* 例如:
 
 ```objc
-#import "TXModel.h"
-
-@interface TXPeople : TXModel
-@property (nonatomic,copy)NSString * name;
-@property (nonatomic,copy)NSString * sex;
-@property (nonatomic,strong)NSNumber * age;
-@property (nonatomic,strong)NSString * occupation;
-@end
+/**
+ * 登录
+ * @param account 账户名
+ * @param verificationCode 验证码
+ * @param password 密码 注意:家长端密码传入“1”
+ */
+- (void)logInWithAccount:(NSString*)account verificationCode:(NSString*)verificationCode password:(NSString*)password{
+    _operationType=LROperationTypeLogIn;
+    NSMutableDictionary *parameters=[NSMutableDictionary dictionary];
+    [parameters setValue:@"1" forKey:@"type"];//家长端
+    if (!account || [account isEqualToString:@""]) {
+        NSString * msg=@"账号不能为空";
+        if (self.completionHandler) self.completionHandler([NSError errorWithDomain:@"KLLogInRegisterViewModelError" code:-1002 userInfo:@{@"msg":msg}],nil);
+    }else if (!verificationCode || [verificationCode isEqualToString:@""]){
+        NSString * msg=@"验证码不能为空";
+        if (self.completionHandler) self.completionHandler([NSError errorWithDomain:@"KLLogInRegisterViewModelError" code:-1003 userInfo:@{@"msg":msg}],nil);
+    }else if (!password || [password isEqualToString:@""]){
+        NSString * msg=@"密码不能为空";
+        if (self.completionHandler) self.completionHandler([NSError errorWithDomain:@"KLLogInRegisterViewModelError" code:-1004 userInfo:@{@"msg":msg}],nil);
+    }else{
+        
+    }
+}
 
 ```
 * 使用示例:
 ```objc
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    
-    
-    NSDictionary * dict=@{@"name":@"小明",
-                          @"sex":@"男",
-                          @"age":@17,
-                          };
-    TXPeople * people1=[[TXPeople alloc]initWithDictionary:dict];
-    NSLog(@"people1.name:%@",people1.name);
-    NSLog(@"people1.sex:%@",people1.sex);
-    NSLog(@"people1.age:%@",people1.age);
-    NSLog(@"people1.occupation:%@",people1.occupation);
-    NSLog(@"people1.valueForJsonString:%@",people1.valueForJsonString);
-    NSLog(@"people1.valueForKey:%@",people1.valueForKey);
-    NSLog(@"people1.valueForArray:%@",people1.valueForArray);
-    
-    
-    
-    NSString * str=@"{\"name\" : \"小花\",\"sex\" : \"女\",\"age\" : 16,\"occupation\" :\"学生\" }";
-    TXPeople * people2=[[TXPeople alloc]initWithJsonString:str];
-    NSLog(@"people2.name:%@",people2.name);
-    NSLog(@"people2.sex:%@",people2.sex);
-    NSLog(@"people2.age:%@",people2.age);
-    NSLog(@"people2.occupation:%@",people2.occupation);
-    NSLog(@"people2.valueForJsonString:%@",people2.valueForJsonString);
-    NSLog(@"people2.valueForKey:%@",people2.valueForKey);
-    NSLog(@"people2.valueForArray:%@",people2.valueForArray);
-    
-    
-    
+    /** 登录接口演示 */
+    NSMutableDictionary *parameters=[NSMutableDictionary dictionary];
+    [parameters setValue:@"账号" forKey:@"account"];
+    [parameters setValue:@"验证码" forKey:@"vcode"];
+    [TXNetWorking post:@"请求接口" parameters:parameters showHUD:YES completionHandler:^(NSError *error, TXNetModel *netModel) {
+        if (!error) {
+            //登录成功
+        }else{
+           //登录失败
+        }
+    }];
     // Do any additional setup after loading the view, typically from a nib.
 }
 ```
-* 打印示例:
-```objc
-2018-05-29 14:26:24.085763+0800 TXModelDemo[17840:309289] people1.name:小明
-2018-05-29 14:26:24.085944+0800 TXModelDemo[17840:309289] people1.sex:男
-2018-05-29 14:26:24.086073+0800 TXModelDemo[17840:309289] people1.age:17
-2018-05-29 14:26:24.086186+0800 TXModelDemo[17840:309289] people1.occupation:(null)
-2018-05-29 14:26:24.086522+0800 TXModelDemo[17840:309289] people1.valueForJsonString:{
-  "age" : 17,
-  "sex" : "男",
-  "name" : "小明",
-  "occupation" : null
-}
-2018-05-29 14:26:24.086827+0800 TXModelDemo[17840:309289] people1.valueForKey:{
-    age = 17;
-    name = "\U5c0f\U660e";
-    occupation = "<null>";
-    sex = "\U7537";
-}
-2018-05-29 14:26:24.087065+0800 TXModelDemo[17840:309289] people1.valueForArray:(
-    17,
-    "\U7537",
-    "\U5c0f\U660e",
-    "<null>"
-)
-2018-05-29 14:26:24.087350+0800 TXModelDemo[17840:309289] people2.name:小花
-2018-05-29 14:26:24.087485+0800 TXModelDemo[17840:309289] people2.sex:女
-2018-05-29 14:26:24.087600+0800 TXModelDemo[17840:309289] people2.age:16
-2018-05-29 14:26:24.087731+0800 TXModelDemo[17840:309289] people2.occupation:学生
-2018-05-29 14:26:24.087892+0800 TXModelDemo[17840:309289] people2.valueForJsonString:{
-  "age" : 16,
-  "sex" : "女",
-  "name" : "小花",
-  "occupation" : "学生"
-}
-2018-05-29 14:26:24.088079+0800 TXModelDemo[17840:309289] people2.valueForKey:{
-    age = 16;
-    name = "\U5c0f\U82b1";
-    occupation = "\U5b66\U751f";
-    sex = "\U5973";
-}
-2018-05-29 14:26:24.088262+0800 TXModelDemo[17840:309289] people2.valueForArray:(
-    16,
-    "\U5973",
-    "\U5c0f\U82b1",
-    "\U5b66\U751f"
-)
-```
+
