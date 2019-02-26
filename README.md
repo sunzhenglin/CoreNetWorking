@@ -1,89 +1,122 @@
 # CoreNetWorking
-* 轻量级的网络请求
-### TXModel优点
-*
+* 轻量级的网络请在使用GET、POST、以及图片上传时是你的操作更简单快捷、在进行网络请求时还可以智能显示加载进度HUD
+### CoreNetWorking优点
+* 使用以及操作简单快捷
+* 内部集成HUD以及智能显示HUD
+* 更加方便的网络检测功能
+* 内部监听错误以更加简单的方式让你统一处理错误使你的开发更加高效
 
-### TXModel缺点
+### CoreNetWorking缺点
 * 逻辑复杂、多变的情况下需要开发者二次封装才能完成各项任务
 
 ### cocoapods集成
-* pod 'TXModel', '~> 1.0.1'
+* pod 'CoreNetWorkingLib', '~> 0.2.0'
 ### 代码片段
 
 ```objc
-/**
-*  使用字典初始化 (对象方法)
-*  @param dictionary 字典 (必填)
-*/
-- (instancetype)initWithDictionary:(NSDictionary*)dictionary;
+/** 完成回调 */
+typedef void (^NWCompletionHandler) (NSError *error,id obj);
+
+/** HUD显示类型 */
+typedef NS_ENUM(NSInteger,NWShowHUDType){
+    NWShowHUDTypeDefault     =0,//默认
+    NWShowHUDTypeInfo        =1,//信息
+    NWShowHUDTypeCaveatInfo  =2,//警告
+    NWShowHUDTypeSuccessInfo =3,//成功
+    NWShowHUDTypeFailureInfo =4,//失败
+};
 
 /**
-*  使用字典初始化 (类方法)
-*  @param dictionary 字典 (必填)
-*/
-+ (instancetype)modelWithDictionary:(NSDictionary*)dictionary;
+ 网络管理器
+ 
+ 主要功能:GET请求、POST请求、上传单张图片、上传多张图片、网络检测、HUD
+ 
+ 辅助功能1:“TXNetErrorCode.h”以及“TXNetErrorDelegate.h”文件主要集中处理错误代码
+ 
+ 辅助功能2:“TXNetworkStatusDelegate.”文件主要集中处理网络状态
+ 
+ */
+@interface TXNetWorking : NSObject
+
+/** 网络状态(注意:只用在开启网络检测时可用) */
+@property (nonatomic,assign,readonly)NWNetworkStatus networkStatus;
+
+/** 网络请求识别码(注意:适用于空灵智能) */
+@property (nonatomic,assign)NSInteger code;
+/** 网络管理器 */
++ (TXNetWorking*)netWorkingManager;
+
+/** AFHTTPSessionManager */
++ (AFHTTPSessionManager*)aFManager;
+
+/** 开启网络检测 */
++ (void)openNetworkMonitoring;
+
+
 
 /**
-*  使用Json初始化 (对象方法)
-*  @param jsonString Json字符串 (必填)
-*/
-- (instancetype)initWithJsonString:(NSString*)jsonString;
+ *  显示HUD
+ *  @param showHUDType HUD显示类型
+ *  @param info 信息
+ */
++ (void)showHUDWithShowHUDType:(NWShowHUDType)showHUDType info:(NSString*)info;
+
+/** 消除HUD */
++ (void)dismissHUD;
 
 /**
-*  使用Json初始化 (类方法)
-*  @param jsonString Json字符串 (必填)
-*/
-+ (instancetype)modelWithJsonString:(NSString*)jsonString;
+ *  post
+ *  @param strURL 请求的URL
+ *  @param parameters 请求的参数
+ *  @param showHUD 是否显示HUD
+ */
++ (void)post:(NSString*)strURL parameters:(NSDictionary*)parameters showHUD:(BOOL)showHUD completionHandler:(NWCompletionHandler)completionHandler;
 
 /**
-*  获取对象的值
-*/
-+ (NSDictionary*)objectValue:(id)obj;
+ *  get
+ *  @param strURL 请求的URL
+ *  @param parameters 请求的参数
+ *  @param showHUD 是否显示HUD
+ */
++ (void)get:(NSString*)strURL parameters:(NSDictionary*)parameters showHUD:(BOOL)showHUD completionHandler:(NWCompletionHandler)completionHandler;
 
 /**
-*  获取对象内部
-*/
-+ (id)objectInternal:(id)obj;
+ *  图片上传(单张)
+ *  @param strURL 上传图片的接口路径，如/path/images/
+ *  @param image 图片对象
+ *  @param filename 给图片起一个名字，默认为当前日期时间,格式为"yyyyMMddHHmmss"，后缀为`jpg`
+ *  @param name 与指定的图片相关联的名称，这是由后端写接口的人指定的，如imagefiles
+ *  @param mimeType 默认为image/jpeg
+ *  @param parameters 参数
+ *  @param showHUD 是否显示HUD
+ */
++ (void)uploadImage:(NSString *)strURL
+              image:(UIImage *)image
+           filename:(NSString *)filename
+               name:(NSString *)name
+           mimeType:(NSString *)mimeType
+         parameters:(NSDictionary *)parameters
+            showHUD:(BOOL)showHUD
+  completionHandler:(NWCompletionHandler)completionHandler;
 
 /**
-*  字典转化为数组
-*  @param dictionary 字典 (必填)
-*/
-+ (NSArray*)dictionaryTransitionsAarrayWithDictionary:(NSDictionary*)dictionary;
-
-/**
-*  当前对象的值
-*/
-- (NSDictionary*)valueForKey;
-
-/**
-*  当前对象的值的集合
-*/
-- (NSArray*)valueForArray;
-
-/**
-*  Json转字典
-*  @param jsonString Json字符串 (必填)
-*/
-+ (NSDictionary*)dictionaryWithJsonString:(NSString*)jsonString;
-
-/**
-*  字典转Json
-*  @param dictionary 字典 (必填)
-*/
-+ (NSString*)jsonStringWithDictionary:(NSDictionary*)dictionary;
-
-/**
-*  当前对象的Json
-*/
-- (NSString*)valueForJsonString;
-
-/**
-*  批量将数据转成该类模型集合
-*  @param dictionarys 字典集合 (必填)
-*/
-+ (NSArray*)arrayOfModelsFromDictionarys:(NSArray<NSDictionary*>*)dictionarys;
-
+ *  图片上传(多张)
+ *  @param strURL 上传图片的接口路径，如/path/images/
+ *  @param images 图片集合
+ *  @param filename 给图片起一个名字，默认为当前日期时间,格式为"yyyyMMddHHmmss"，后缀为`jpg`
+ *  @param name 与指定的图片相关联的名称，这是由后端写接口的人指定的，如imagefiles
+ *  @param mimeType 默认为image/jpeg
+ *  @param parameters 参数
+ *  @param showHUD 是否显示HUD
+ */
++ (void)uploadImage:(NSString *)strURL
+              images:(NSArray<UIImage*> *)images
+           filename:(NSString *)filename
+               name:(NSString *)name
+           mimeType:(NSString *)mimeType
+         parameters:(NSDictionary *)parameters
+            showHUD:(BOOL)showHUD
+  completionHandler:(NWCompletionHandler)completionHandler;
 ```
 ### 使用方法
 * 创建模型时继承TXModel类
