@@ -167,6 +167,7 @@ typedef NS_ENUM(NSInteger,NWShowHUDType){
     [parameters setValue:@"1" forKey:@"pwd"];
     // 注意:“HTTP_API(@"user/login.do")”这个是登录接口
     // 注意:“parameters”这个是请求参数 
+    // 注意:“YES”这个是是否显示HUD,现在这里是显示 
     [TXNetWorking post:HTTP_API(@"user/login.do") parameters:parameters showHUD:YES completionHandler:^(NSError *error, TXNetModel *netModel) {
         if (!error) {
             //登录成功
