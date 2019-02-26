@@ -52,8 +52,6 @@ typedef NS_ENUM(NSInteger,NWShowHUDType){
 /** 开启网络检测 */
 + (void)openNetworkMonitoring;
 
-
-
 /**
  *  显示HUD
  *  @param showHUDType HUD显示类型
