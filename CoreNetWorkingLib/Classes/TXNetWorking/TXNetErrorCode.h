@@ -77,10 +77,13 @@ typedef NS_ENUM(NSInteger,TXErrorCodeType){
     TXErrorCodeTypeTheNumberOfInspectionsHasReachedTheUpperLimit =4057,//巡检次数已达上限
     TXErrorCodeTypeShortIntervalFromLastInspection     =4058,//与上次巡检时间间隔过短
     TXErrorCodeTypeTheFakeArticleHasBeenSubmittedAndIsNotOperational =4059,//假条已经提交，不可操作
-    TXErrorCodeTypeServerError                        =5001,//服务器发生错误
-    TXErrorCodeTypeDataSaveFailed                     =5002,//数据保存失败
-    TXErrorCodeTypeDataDeletionFailed                 =5003,//数据删除失败
-    TXErrorCodeTypeFrequentOperation                  =5004,//操作频繁
+    TXErrorCodeTypeJobNotFound                         =4060,//未找到作业
+    TXErrorCodeTypeStudentNotFound                     =4061,//未找到学生
+    TXErrorCodeTypeReplyAlreadyExists                  =4062,//回复已存在
+    TXErrorCodeTypeServerError                         =5001,//服务器发生错误
+    TXErrorCodeTypeDataSaveFailed                      =5002,//数据保存失败
+    TXErrorCodeTypeDataDeletionFailed                  =5003,//数据删除失败
+    TXErrorCodeTypeFrequentOperation                   =5004,//操作频繁
     TXErrorCodeTypeRongyunPlatformUserRegistrationFailed =6001,//融云平台用户注册失败
     TXErrorCodeTypeRongyunPlatformFailedToUpdateUsers    =6002,//融云平台更新用户失败
     TXErrorCodeTypeGuardianVerificationFailed            =6003,//监护人校验失败

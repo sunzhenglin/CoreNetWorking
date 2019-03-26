@@ -80,6 +80,9 @@ NSString * const errorCodeTypeKey=@"errorCodeType";
                                      TXErrorCodeTypeTheNumberOfInspectionsHasReachedTheUpperLimit|
                                      TXErrorCodeTypeShortIntervalFromLastInspection|
                                      TXErrorCodeTypeTheFakeArticleHasBeenSubmittedAndIsNotOperational|
+                                     TXErrorCodeTypeJobNotFound|
+                                     TXErrorCodeTypeStudentNotFound|
+                                     TXErrorCodeTypeReplyAlreadyExists|
                                      TXErrorCodeTypeServerError|
                                      TXErrorCodeTypeDataSaveFailed|
                                      TXErrorCodeTypeDataDeletionFailed|
@@ -222,6 +225,12 @@ NSString * const errorCodeTypeKey=@"errorCodeType";
         return @"与上次巡检时间间隔过短";
     }else if (errorCodeType==TXErrorCodeTypeTheFakeArticleHasBeenSubmittedAndIsNotOperational){
         return @"假条已经提交，不可操作";
+    }else if (errorCodeType==TXErrorCodeTypeJobNotFound){
+        return @"未找到作业";
+    }else if (errorCodeType==TXErrorCodeTypeStudentNotFound){
+        return @"未找到学生";
+    }else if (errorCodeType==TXErrorCodeTypeReplyAlreadyExists){
+        return @"回复已存在";
     }else if (errorCodeType==TXErrorCodeTypeServerError){
         return @"服务器发生错误";
     }else if (errorCodeType==TXErrorCodeTypeDataSaveFailed){

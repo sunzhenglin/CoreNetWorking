@@ -16,7 +16,7 @@ FOUNDATION_EXPORT NSString *const TXNetworkMonitoringNotification;
 /** 网络状态Key */
 FOUNDATION_EXPORT NSString *const networkStatusKey;
 
-
+ 
 
 @class TXNetworkStatusDelegate;
 @protocol TXNetworkStatusDelegate <NSObject>
