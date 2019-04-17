@@ -14,7 +14,7 @@ PODS:
   - AFNetworking/Serialization (3.2.1)
   - AFNetworking/UIKit (3.2.1):
     - AFNetworking/NSURLSession
-  - CoreNetWorkingLib (0.2.1):
+  - CoreNetWorkingLib (0.3.0):
     - AFNetworking (~> 3.2.1)
     - SVProgressHUD (~> 2.2.5)
     - TXModel (~> 1.0.1)
@@ -36,7 +36,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   AFNetworking: b6f891fdfaed196b46c7a83cf209e09697b94057
-  CoreNetWorkingLib: 85a5a9ff47001086b2265178afe621ecae7e3dcb
+  CoreNetWorkingLib: 8a5784212ad26a191790f90b78f8487f27a964bc
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
   TXModel: 116bca2566ae582e273af09448af4a617b1bf050
 

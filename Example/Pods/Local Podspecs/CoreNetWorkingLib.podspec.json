@@ -1,19 +1,19 @@
 {
   "name": "CoreNetWorkingLib",
-  "version": "0.2.1",
-  "summary": "A short description of CoreNetWorking.",
-  "description": "TODO: Add long description of the pod here.",
+  "version": "0.3.0",
+  "summary": "杭州空灵智能科技有限公司基于AFNetworking所开发开发网络请求库,支持get、post、upload等功能.",
+  "description": "杭州空灵智能科技有限公司基于AFNetworking所开发开发网络请求库,支持get、post、upload、以及网络检测等功能.",
   "homepage": "https://github.com/sunzhenglin/CoreNetWorkingLib",
   "license": {
     "type": "MIT",
     "file": "LICENSE"
   },
   "authors": {
-    "acct<blob>=0xE7A9BAE781B5E699BAE883BD": "393992811@qq.com"
+    "szl": "393992811@qq.com"
   },
   "source": {
     "git": "https://github.com/sunzhenglin/CoreNetWorkingLib.git",
-    "tag": "0.2.1"
+    "tag": "0.3.0"
   },
   "platforms": {
     "ios": "8.0"
@@ -29,5 +29,6 @@
     "TXModel": [
       "~> 1.0.1"
     ]
-  }
+  },
+  "prefix_header_contents": "#import \"CoreNetworking.h\""
 }
