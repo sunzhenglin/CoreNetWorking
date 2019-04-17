@@ -12,7 +12,7 @@ Pod::Spec.new do |s|
   # 组件版本
   s.version          = '0.3.0'
   # 组件概要说明
-  s.summary          = '杭州空灵智能科技有限公司基于AFNetworking所开发开发网络请求库,支持get、post、upload等功能.'
+  s.summary          = '杭州空灵智能科技有限公司基于AFNetworking所开发的网络请求库,支持get、post、upload等功能.'
 
 # This description is used to generate tags and improve search results.
 #   * Think: What does it do? Why did you write it? What is the focus?
@@ -22,7 +22,7 @@ Pod::Spec.new do |s|
 
   # 组件详细说明
   s.description      = <<-DESC
-  杭州空灵智能科技有限公司基于AFNetworking所开发开发网络请求库,支持get、post、upload、以及网络检测等功能.
+  杭州空灵智能科技有限公司基于AFNetworking所开发的网络请求库,支持get、post、upload、以及网络检测等功能.
                        DESC
   # 首页地址
   s.homepage         = 'https://github.com/sunzhenglin/CoreNetWorkingLib'
