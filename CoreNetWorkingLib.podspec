@@ -46,5 +46,4 @@ Pod::Spec.new do |s|
   s.dependency 'TXModel', '~> 1.0.1'
   # 公开的头文件
   s.prefix_header_contents = '#import "CoreNetworking.h"'
-  
 end
