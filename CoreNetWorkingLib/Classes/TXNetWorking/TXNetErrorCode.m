@@ -83,6 +83,13 @@ NSString * const errorCodeTypeKey=@"errorCodeType";
                                      TXErrorCodeTypeJobNotFound|
                                      TXErrorCodeTypeStudentNotFound|
                                      TXErrorCodeTypeReplyAlreadyExists|
+                                     TXErrorCodeTypeDeadlineCannotBeEarlierThanCurrentTime|
+                                     TXErrorCodeTypeNoSubjectsFound|
+                                     TXErrorCodeTypePleaseSelectASubject|
+                                     TXErrorCodeTypePleaseSelectAClass|
+                                     TXErrorCodeTypePleaseEnterAJobTitle|
+                                     TXErrorCodeTypePleaseEnterADeadline|
+                                     TXErrorCodeTypeNoMealPlan|
                                      TXErrorCodeTypeServerError|
                                      TXErrorCodeTypeDataSaveFailed|
                                      TXErrorCodeTypeDataDeletionFailed|
@@ -231,6 +238,20 @@ NSString * const errorCodeTypeKey=@"errorCodeType";
         return @"未找到学生";
     }else if (errorCodeType==TXErrorCodeTypeReplyAlreadyExists){
         return @"回复已存在";
+    }else if (errorCodeType==TXErrorCodeTypeDeadlineCannotBeEarlierThanCurrentTime){
+        return @"截止时间不能早于当前时间";
+    }else if (errorCodeType==TXErrorCodeTypeNoSubjectsFound){
+        return @"未找到科目";
+    }else if (errorCodeType==TXErrorCodeTypePleaseSelectASubject){
+        return @"请选择科目";
+    }else if (errorCodeType==TXErrorCodeTypePleaseSelectAClass){
+        return @"请选择班级";
+    }else if (errorCodeType==TXErrorCodeTypePleaseEnterAJobTitle){
+        return @"请输入作业标题";
+    }else if (errorCodeType==TXErrorCodeTypePleaseEnterADeadline){
+        return @"请输入截止时间";
+    }else if (errorCodeType==TXErrorCodeTypeNoMealPlan){
+        return @"没有陪餐计划";
     }else if (errorCodeType==TXErrorCodeTypeServerError){
         return @"服务器发生错误";
     }else if (errorCodeType==TXErrorCodeTypeDataSaveFailed){

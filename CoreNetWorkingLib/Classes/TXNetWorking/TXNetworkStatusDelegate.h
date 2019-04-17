@@ -7,8 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "TXNetWorking.h"
-#import "NWNetworkStatus.h"
+
 NS_ASSUME_NONNULL_BEGIN
 
 /** 网络监测通知 */
@@ -16,7 +15,17 @@ FOUNDATION_EXPORT NSString *const TXNetworkMonitoringNotification;
 /** 网络状态Key */
 FOUNDATION_EXPORT NSString *const networkStatusKey;
 
- 
+/** 网络状态 */
+typedef NS_ENUM(NSInteger,NWNetworkStatus){
+    /** 未识别的网络*/
+    NWNetworkStatusUnknown          =-1,
+    /** 不可达的网络(未连接) */
+    NWNetworkStatusReachable        =0,
+    /** 2G,3G,4G...的网络 */
+    NWNetworkStatusReachableViaWWAN =1,
+    /** Wi-Fi的网络 */
+    NWNetworkStatusReachableViaWiFi =2,
+};
 
 @class TXNetworkStatusDelegate;
 @protocol TXNetworkStatusDelegate <NSObject>

@@ -80,6 +80,13 @@ typedef NS_ENUM(NSInteger,TXErrorCodeType){
     TXErrorCodeTypeJobNotFound                         =4060,//未找到作业
     TXErrorCodeTypeStudentNotFound                     =4061,//未找到学生
     TXErrorCodeTypeReplyAlreadyExists                  =4062,//回复已存在
+    TXErrorCodeTypeDeadlineCannotBeEarlierThanCurrentTime=4063,//截止时间不能早于当前时间
+    TXErrorCodeTypeNoSubjectsFound                     =4064,//未找到科目
+    TXErrorCodeTypePleaseSelectASubject                =4065,//请选择科目
+    TXErrorCodeTypePleaseSelectAClass                  =4066,//请选择班级
+    TXErrorCodeTypePleaseEnterAJobTitle                =4067,//请输入作业标题
+    TXErrorCodeTypePleaseEnterADeadline                =4068,//请输入截止时间
+    TXErrorCodeTypeNoMealPlan                          =4069,//没有陪餐计划
     TXErrorCodeTypeServerError                         =5001,//服务器发生错误
     TXErrorCodeTypeDataSaveFailed                      =5002,//数据保存失败
     TXErrorCodeTypeDataDeletionFailed                  =5003,//数据删除失败

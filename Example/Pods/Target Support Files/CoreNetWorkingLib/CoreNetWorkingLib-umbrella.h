@@ -11,7 +11,6 @@
 #endif
 
 #import "CoreNetworking.h"
-#import "NWNetworkStatus.h"
 #import "TXNetErrorCode.h"
 #import "TXNetErrorDelegate.h"
 #import "TXNetModel.h"

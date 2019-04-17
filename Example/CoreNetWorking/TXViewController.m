@@ -7,6 +7,7 @@
 //
 
 #import "TXViewController.h"
+#import "CoreNetworking.h"
 
 @interface TXViewController ()
 

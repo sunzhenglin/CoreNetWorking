@@ -13,7 +13,7 @@
 #import "TXNetErrorCode.h"
 #import "TXNetErrorDelegate.h"
 #import "TXNetworkStatusDelegate.h"
-#import "NWNetworkStatus.h"
+
 /** 完成回调 */
 typedef void (^NWCompletionHandler) (NSError *error,id obj);
 
@@ -29,7 +29,11 @@ typedef NS_ENUM(NSInteger,NWShowHUDType){
 /**
  *  网络管理器
  *
- *  主要功能:GET请求、POST请求、上传单张图片、上传多张图片、网络检测、HUD
+ *  主要功能:GET请求、POST请求、上传单张图片、上传多张图片、上传多组多图片、网络检测、HUD、上传单文件、上传多文件、上传多组多文件
+ *
+ *  主要设置:1.设置请求超时时间 2.设置请求头 3.设置内容类型 4.设置网络请求识别码
+ *
+ *  辅助快捷:1.HUD显示 2.获取当前时间
  *
  *  辅助功能1:“TXNetErrorCode.h”以及“TXNetErrorDelegate.h”文件主要集中处理错误代码
  *
@@ -112,6 +116,17 @@ typedef NS_ENUM(NSInteger,NWShowHUDType){
 + (void)dismissHUD;
 
 /**
+ *  获取当前时间
+ *
+ *  注意:“dateFormat”参数默认格式为:yyyyMMddHHmmss
+ *
+ *  @param dateFormat 时间格式 如:yyyyMMddHHmmss
+ *
+ *  @return 当前时间
+ */
++ (NSString*)currentTimeWithDateFormat:(NSString*)dateFormat;
+
+/**
  *  post
  *  @param strURL 请求的URL
  *  @param parameters 请求的参数
@@ -131,7 +146,7 @@ typedef NS_ENUM(NSInteger,NWShowHUDType){
  *  图片上传(单张)
  *  @param strURL 上传图片的接口路径，如/path/images/
  *  @param image 图片对象
- *  @param filename 给图片起一个名字，默认为当前日期时间,格式为"yyyyMMddHHmmss"，后缀为`jpg`
+ *  @param fileName 给图片起一个名字，默认为当前日期时间,格式为"yyyyMMddHHmmss"，后缀为`jpg`
  *  @param name 与指定的图片相关联的名称，这是由后端写接口的人指定的，如imagefiles
  *  @param mimeType 默认为image/jpeg
  *  @param parameters 参数
@@ -139,7 +154,7 @@ typedef NS_ENUM(NSInteger,NWShowHUDType){
  */
 + (void)uploadImage:(NSString *)strURL
               image:(UIImage *)image
-           filename:(NSString *)filename
+           fileName:(NSString *)fileName
                name:(NSString *)name
            mimeType:(NSString *)mimeType
          parameters:(NSDictionary *)parameters
@@ -150,7 +165,7 @@ typedef NS_ENUM(NSInteger,NWShowHUDType){
  *  图片上传(多张)
  *  @param strURL 上传图片的接口路径，如/path/images/
  *  @param images 图片集合
- *  @param filename 给图片起一个名字，默认为当前日期时间,格式为"yyyyMMddHHmmss"，后缀为`jpg`
+ *  @param fileName 给图片起一个名字，默认为当前日期时间,格式为"yyyyMMddHHmmss"，后缀为`jpg`
  *  @param name 与指定的图片相关联的名称，这是由后端写接口的人指定的，如imagefiles
  *  @param mimeType 默认为image/jpeg
  *  @param parameters 参数
@@ -158,7 +173,7 @@ typedef NS_ENUM(NSInteger,NWShowHUDType){
  */
 + (void)uploadImage:(NSString *)strURL
               images:(NSArray<UIImage*> *)images
-           filename:(NSString *)filename
+           fileName:(NSString *)fileName
                name:(NSString *)name
            mimeType:(NSString *)mimeType
          parameters:(NSDictionary *)parameters
@@ -169,19 +184,76 @@ typedef NS_ENUM(NSInteger,NWShowHUDType){
  *  图片上传(多组、多张)
  *  @param strURL 上传图片的接口路径，如/path/images/
  *  @param images 多组图片集合
- *  @param filename 给图片起一个名字，默认为当前日期时间,格式为"yyyyMMddHHmmss"，后缀为`jpg`
+ *  @param fileName 给图片起一个名字，默认为当前日期时间,格式为"yyyyMMddHHmmss"，后缀为`jpg`
  *  @param names 与指定的图片相关联的名称集合，这是由后端写接口的人指定的，如imagefiles1、imagefiles2
  *  @param mimeType 默认为image/jpeg
  *  @param parameters 参数
  *  @param showHUD 是否显示HUD
  */
 + (void)uploadImage:(NSString *)strURL
-             images:(NSArray<NSArray<UIImage*>*> *)images
-           filename:(NSString *)filename
+             images:(NSArray<NSArray<UIImage*>*>*)images
+           fileName:(NSString *)fileName
               names:(NSArray<NSString*> *)names
            mimeType:(NSString *)mimeType
          parameters:(NSDictionary *)parameters
             showHUD:(BOOL)showHUD
   completionHandler:(NWCompletionHandler)completionHandler;
+
+/**
+ *  上传文件
+ *  @param strURL 上传文件的接口路径，如/path/files/
+ *  @param fileURL 文件的URL
+ *  @param fileName 给文件起一个名字，如:"yyyyMMddHHmmss.mp4"，
+ *  @param name 与指定的文件相关联的名称，这是由后端写接口的人指定的，如audiofiles
+ *  @param mimeType 上传类型:application/octet-stream
+ *  @param parameters 参数
+ *  @param showHUD 是否显示HUD
+ */
++ (void)uploadFile:(NSString*)strURL
+           fileURL:(NSURL*)fileURL
+          fileName:(NSString*)fileName
+              name:(NSString*)name
+          mimeType:(NSString*)mimeType
+        parameters:(NSDictionary*)parameters
+           showHUD:(BOOL)showHUD
+ completionHandler:(NWCompletionHandler)completionHandler;
+
+/**
+ *  上传文件(多文件)
+ *  @param strURL 上传文件的接口路径，如/path/files/
+ *  @param fileURLs 文件的URL集合
+ *  @param fileName 给文件起一个名字，如:"yyyyMMddHHmmss.mp4"，
+ *  @param name 与指定的文件相关联的名称，这是由后端写接口的人指定的，如audiofiles
+ *  @param mimeType 上传类型:application/octet-stream
+ *  @param parameters 参数
+ *  @param showHUD 是否显示HUD
+ */
++ (void)uploadFile:(NSString*)strURL
+          fileURLs:(NSArray<NSURL*>*)fileURLs
+          fileName:(NSString*)fileName
+              name:(NSString*)name
+          mimeType:(NSString*)mimeType
+        parameters:(NSDictionary*)parameters
+           showHUD:(BOOL)showHUD
+ completionHandler:(NWCompletionHandler)completionHandler;
+
+/**
+ *  上传文件(多组、多文件)
+ *  @param strURL 上传文件的接口路径，如/path/files/
+ *  @param fileURLs 多组文件的URL集合
+ *  @param fileName 给文件起一个名字，如:"yyyyMMddHHmmss.mp4"，
+ *  @param names 与指定的文件相关联的名称集合，这是由后端写接口的人指定的，如audiofiles1,audiofiles2
+ *  @param mimeType 上传类型:application/octet-stream
+ *  @param parameters 参数
+ *  @param showHUD 是否显示HUD
+ */
++ (void)uploadFile:(NSString*)strURL
+          fileURLs:(NSArray<NSArray<NSURL*>*>*)fileURLs
+          fileName:(NSString*)fileName
+             names:(NSArray<NSString*>*)names
+          mimeType:(NSString*)mimeType
+        parameters:(NSDictionary*)parameters
+           showHUD:(BOOL)showHUD
+ completionHandler:(NWCompletionHandler)completionHandler;
 
 @end
