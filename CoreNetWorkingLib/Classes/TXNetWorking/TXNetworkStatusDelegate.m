@@ -7,9 +7,7 @@
 //
 
 #import "TXNetworkStatusDelegate.h"
-
-NSString * const TXNetworkMonitoringNotification =@"networkMonitoringNotification";
-NSString * const networkStatusKey =@"networkStatus";
+#import "TXNWPushMessage.h"
 
 @implementation TXNetworkStatusDelegate
 

@@ -8,34 +8,24 @@
 
 #import <Foundation/Foundation.h>
 #import "AFNetworking.h"
-#import "SVProgressHUD.h"
 #import "TXNetModel.h"
-#import "TXNetErrorCode.h"
+#import "TXNWHUD.h"
 #import "TXNetErrorDelegate.h"
 #import "TXNetworkStatusDelegate.h"
 
 /** 完成回调 */
 typedef void (^NWCompletionHandler) (NSError *error,id obj);
 
-/** HUD显示类型 */
-typedef NS_ENUM(NSInteger,NWShowHUDType){
-    NWShowHUDTypeDefault     =0,//默认
-    NWShowHUDTypeInfo        =1,//信息
-    NWShowHUDTypeCaveatInfo  =2,//警告
-    NWShowHUDTypeSuccessInfo =3,//成功
-    NWShowHUDTypeFailureInfo =4,//失败
-};
-
 /**
  *  网络管理器
  *
  *  主要功能:GET请求、POST请求、上传单张图片、上传多张图片、上传多组多图片、网络检测、HUD、上传单文件、上传多文件、上传多组多文件
  *
- *  主要设置:1.设置请求超时时间 2.设置请求头 3.设置内容类型 4.设置网络请求识别码
+ *  主要设置:1.设置请求超时时间 2.设置请求头 3.设置内容类型 4.设置网络请求识别码 5.设置错误代码 6.设置错误消息名称Key
  *
  *  辅助快捷:1.HUD显示 2.获取当前时间
  *
- *  辅助功能1:“TXNetErrorCode.h”以及“TXNetErrorDelegate.h”文件主要集中处理错误代码
+ *  辅助功能1:“TXNetErrorDelegate.h”文件主要集中处理错误代码
  *
  *  辅助功能2:“TXNetworkStatusDelegate.”文件主要集中处理网络状态
  *
@@ -125,6 +115,51 @@ typedef NS_ENUM(NSInteger,NWShowHUDType){
  *  @return 当前时间
  */
 + (NSString*)currentTimeWithDateFormat:(NSString*)dateFormat;
+
+/** 错误代码字典 */
+@property (nonatomic,strong,readonly)NSDictionary *errorCodeDictionary;
+
+/** 错误代码字典 */
++ (NSDictionary*)errorCodeDictionary;
+
+/**
+ *  是否存在错误代码的值
+ *
+ *  @param value 错误代码的值
+ */
++ (BOOL)existErrorCodeValue:(NSString*)value;
+
+/**
+ *  是否存在错误代码的键
+ *
+ *  @param key 错误代码的键
+ */
++ (BOOL)existErrorCodeKey:(NSInteger)key;
+
+/**
+ *  添加错误代码字典
+ *
+ *  @param errorCodeDictionary 错误字典
+ */
++ (void)addErrorCodeDictionary:(NSDictionary*)errorCodeDictionary;
+
+/**
+ *  添加错误代码字典
+ *
+ *  @param value 错误值
+ *  @param key   键值对
+ */
++ (void)addErrorCodeValue:(NSString*)value forKey:(NSInteger)key;
+
+/** 错误消息名称Key */
+@property (nonatomic,copy)NSString *errorMessageNameKey;
+
+/**
+ *  错误消息名称Key
+ *
+ *  @param errorMessageNameKey 错误消息Key 如:msg
+ */
++ (void)setErrorMessageNameKey:(NSString*)errorMessageNameKey;
 
 /**
  *  post

@@ -1,0 +1,52 @@
+#ifdef __OBJC__
+#import <UIKit/UIKit.h>
+#else
+#ifndef FOUNDATION_EXPORT
+#if defined(__cplusplus)
+#define FOUNDATION_EXPORT extern "C"
+#else
+#define FOUNDATION_EXPORT extern
+#endif
+#endif
+#endif
+
+// 依赖库的头文件
+#import "TXAdapter.h"
+#import "TXCoreData.h"
+#import "CoreNetworking.h"
+#import "MGJRouterKit.h"
+#import "IQKeyboardManager.h"
+
+// 该库头文件
+#import "TXURBundle.h"
+#import "TXNulleSchoolTeacherLoginModuleRouter.h"
+
+// 颜色
+#ifdef TXLFRGBA
+#else
+#define TXLFRGBA(r, g, b, a) [UIColor colorWithRed:r/255.f green:g/255.f blue:b/255.f alpha:a]
+#endif
+
+// Bundle文件名
+static NSString *const TXNulleSchoolTeacherLoginModule_Bundle_Name =@"TXNulleSchoolTeacherLoginModule";
+
+// 服务器地址
+#ifdef SERVER_IP
+#else
+#define SERVER_IP @"edu.nullehome.com"
+#endif
+// 服务器端口
+#ifdef SERVER_PORT
+#else
+#define SERVER_PORT @"80"
+#endif
+// 根API
+#ifdef HTTP_ROOT_API
+#else
+#define HTTP_ROOT_API(apiName) [NSString stringWithFormat:@"http://%@:%@/%@",SERVER_IP,SERVER_PORT,apiName]
+#endif
+// API
+#ifdef HTTP_API
+#else
+#define HTTP_API(apiName) [HTTP_ROOT_API(@"api/") stringByAppendingFormat:apiName]
+#endif

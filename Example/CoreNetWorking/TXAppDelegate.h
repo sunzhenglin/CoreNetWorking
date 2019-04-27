@@ -6,10 +6,16 @@
 //  Copyright (c) 2019 acct<blob>=0xE7A9BAE781B5E699BAE883BD. All rights reserved.
 //
 
-@import UIKit;
 
-@interface TXAppDelegate : UIResponder <UIApplicationDelegate>
+@import UIKit;
+#import <TXNulleSchoolTeacherLoginModuleRouter.h>
+#import "TXViewController.h"
+#import <MGJRouterKit.h>
+#import "TXNetWorking.h"
+
+@interface TXAppDelegate : UIResponder <UIApplicationDelegate,TXNetWorkRequestErrorDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
+@property (strong, nonatomic) TXNetErrorDelegate *netErrorDelegate;
 
 @end

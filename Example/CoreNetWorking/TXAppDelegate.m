@@ -10,11 +10,43 @@
 
 @implementation TXAppDelegate
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
-{
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions{
+    
+    NSBundle *bundle = [NSBundle mainBundle];
+    NSString *path = [bundle pathForResource:@"NulleSmartSchoolErrorCode" ofType:@"plist"];
+    NSDictionary *dict =[NSDictionary dictionaryWithContentsOfFile:path];
+    [TXNetWorking addErrorCodeDictionary:dict];
+    [TXNetWorking setErrorMessageNameKey:@"msg"];
+    
+    [TXNetWorking addErrorCodeValue:@"未找到科目" forKey:4064];
+    [TXNetWorking addErrorCodeValue:@"未找到科目" forKey:4064];
+    [TXNetWorking addErrorCodeValue:@"未找到科目" forKey:4064];
+    [TXNetWorking addErrorCodeValue:@"未找到科目" forKey:4064];
+    [TXNetWorking addErrorCodeValue:@"Uface注册失败" forKey:4029];
+    
+    // 创建参数
+    NSMutableDictionary *parameters=[NSMutableDictionary dictionary];
+    // 定义登录回调代码块
+    typedef UIViewController *_Nonnull(^TXLICompletionHandler) (NSError *_Nullable error  ,id _Nullable obj);
+    // 登录回调
+    TXLICompletionHandler loginCompletionHandler = ^(NSError *_Nullable error  ,id _Nullable obj){
+        UINavigationController *navigationController=[[UINavigationController alloc]initWithRootViewController:[TXViewController new]];
+        return navigationController;
+    };
+    [parameters setValue:loginCompletionHandler forKey:@"loginCompletionHandler"];
+    self.window.rootViewController=[MGJRouter objectForURL:TXGetLoginModuleURL withUserInfo:parameters];
+    
     // Override point for customization after application launch.
     return YES;
 }
+
+/** 错误类型 */
+- (void)netErrorDelegate:(TXNetErrorDelegate*)netErrorDelegate errorCode:(NSInteger)errorCode errorCodeString:(NSString*)errorCodeString{
+    NSLog(@"errorCode:%@  errorCodeString:%@",[NSString stringWithFormat:@"%ld",(long)errorCode],errorCodeString);
+    NSLog(@"-------->value:%@",[TXNetErrorDelegate errorCodeKeyForValue:errorCode]);
+    NSLog(@"-------->key:%ld",(long)[TXNetErrorDelegate errorCodeValueForKey:errorCodeString]);
+}
+
 
 - (void)applicationWillResignActive:(UIApplication *)application
 {

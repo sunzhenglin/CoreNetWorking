@@ -1,0 +1,6 @@
+framework module TXCoreData {
+  umbrella header "TXCoreData-umbrella.h"
+
+  export *
+  module * { export * }
+}

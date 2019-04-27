@@ -5,4 +5,11 @@ platform :ios, '8.0'
 target 'CoreNetWorking_Example' do
   pod 'CoreNetWorkingLib', :path => '../'
  
+ # 私有库源地址
+ source 'https://github.com/CocoaPods/Specs.git'
+ source 'https://sunzhenglin:sunlin009@gitee.com/sunzhenglin/txRepos.git'
+ source 'https://gitee.com/xtzPioneer/TXSpec.git'
+ 
+ pod 'TXNulleSchoolTeacherLoginModule'
+ 
 end

@@ -7,6 +7,7 @@
 //
 
 #import "TXNetWorking.h"
+#import "TXNWPushMessage.h"
 
 /** DEBUG 打印日志 */
 #if DEBUG
@@ -14,6 +15,11 @@
 #else
 #define TXNETLog(s, ... )
 #endif
+
+@interface TXNetWorking ()
+/** 私有错误代码字典 */
+@property (nonatomic,strong)NSMutableDictionary *privateErrorCodeDictionary;
+@end
 
 @implementation TXNetWorking
 
@@ -53,9 +59,15 @@
         self.contentTypes=[NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html", @"text/xml", @"text/plain", nil];
         /*网络请求识别码*/
         self.code=0;
+        /*私有错误代码字典*/
+        self.privateErrorCodeDictionary=[NSMutableDictionary dictionary];
+        /*错误消息名称Key*/
+        self.errorMessageNameKey=@"errorMessage";
     }
     return self;
 }
+
+#pragma mark- 属性设置
 
 /**
  *  设置AFHTTPSessionManager
@@ -131,87 +143,6 @@
     TXNETLog(@"设置网络请求识别码==>code:%ld",(long)_code);
 }
 
-/** 开启网络检测 */
-+ (void)openNetworkMonitoring{
-    [self netWorkingManager].aFReachabilityManager=[AFNetworkReachabilityManager sharedManager];
-    [[self netWorkingManager].aFReachabilityManager setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status){
-        switch (status) {
-                case AFNetworkReachabilityStatusUnknown:{
-                    [TXNetWorking netWorkingManager].networkStatus=NWNetworkStatusUnknown;
-                    [self pushNetworkStatusWithNetworkStatus:NWNetworkStatusUnknown];
-                }
-                break;
-                case AFNetworkReachabilityStatusNotReachable:{
-                    [TXNetWorking netWorkingManager].networkStatus=NWNetworkStatusReachable;
-                    [self pushNetworkStatusWithNetworkStatus:NWNetworkStatusReachable];
-                }
-                break;
-                case AFNetworkReachabilityStatusReachableViaWWAN:{
-                    [TXNetWorking netWorkingManager].networkStatus=NWNetworkStatusReachableViaWWAN;
-                    [self pushNetworkStatusWithNetworkStatus:NWNetworkStatusReachableViaWWAN];
-                }
-                break;
-                case AFNetworkReachabilityStatusReachableViaWiFi:{
-                    [TXNetWorking netWorkingManager].networkStatus=NWNetworkStatusReachableViaWiFi;
-                    [self pushNetworkStatusWithNetworkStatus:NWNetworkStatusReachableViaWiFi];
-                }
-                break;
-            default:
-                break;
-        }
-    }];
-    [[self netWorkingManager].aFReachabilityManager startMonitoring];
-}
-
-/** 网络状态 */
-- (void)setNetworkStatus:(NWNetworkStatus)networkStatus{
-    _networkStatus=networkStatus;
-}
-
-/** 推送网络状态 */
-+ (void)pushNetworkStatusWithNetworkStatus:(NWNetworkStatus)networkStatus{
-    NSDictionary *parameters=@{networkStatusKey:[NSNumber numberWithInteger:networkStatus]};
-    [[NSNotificationCenter defaultCenter] postNotificationName:TXNetworkMonitoringNotification object:nil userInfo:parameters];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:TXNetworkMonitoringNotification object:nil];
-}
-
-/**
- *  显示HUD
- *  @param showHUDType HUD显示类型
- *  @param info 信息
- */
-+ (void)showHUDWithShowHUDType:(NWShowHUDType)showHUDType info:(NSString*)info{
-    [SVProgressHUD setDefaultStyle:SVProgressHUDStyleLight];
-    [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeBlack];
-    [SVProgressHUD setMinimumDismissTimeInterval:1.0];
-    if (showHUDType==NWShowHUDTypeDefault) {
-        [SVProgressHUD show];
-    }else if (showHUDType==NWShowHUDTypeInfo){
-        [SVProgressHUD showWithStatus:info];
-    }else if (showHUDType==NWShowHUDTypeCaveatInfo){
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.128 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [SVProgressHUD showInfoWithStatus:info];
-        });
-    }else if (showHUDType==NWShowHUDTypeSuccessInfo){
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.128 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [SVProgressHUD showSuccessWithStatus:info];
-        });
-    }else if (showHUDType==NWShowHUDTypeFailureInfo){
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.128 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [SVProgressHUD showErrorWithStatus:info];
-        });
-    }else{
-        [SVProgressHUD show];
-    }
-}
-
-/** 消除HUD */
-+ (void)dismissHUD{
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.128 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [SVProgressHUD dismiss];
-    });
-}
-
 /**
  *  获取当前时间
  *
@@ -228,6 +159,145 @@
     NSString *currentTime=[formatter stringFromDate:[NSDate date]];
     return currentTime;
 }
+
+/** 私有错误代码字典 */
+- (void)setPrivateErrorCodeDictionary:(NSMutableDictionary *)privateErrorCodeDictionary{
+    _privateErrorCodeDictionary=privateErrorCodeDictionary;
+}
+
+/** 错误代码字典 */
+- (NSDictionary*)errorCodeDictionary{
+    return self.privateErrorCodeDictionary.copy;
+}
+
+/** 错误代码字典 */
++ (NSDictionary*)errorCodeDictionary{
+    return [self netWorkingManager].errorCodeDictionary;
+}
+
+/**
+ *  是否存在错误代码的值
+ *
+ *  @param value 错误代码的值
+ */
++ (BOOL)existErrorCodeValue:(NSString*)value{
+    __block BOOL exist;
+    [[self netWorkingManager].errorCodeDictionary enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
+        if ([obj isEqualToString:value]) exist=YES;
+    }];
+    return exist;
+}
+
+/**
+ *  是否存在错误代码的键
+ *
+ *  @param key 错误代码的键
+ */
++ (BOOL)existErrorCodeKey:(NSInteger)key{
+    if ([[[self netWorkingManager].errorCodeDictionary allKeys] containsObject:[NSString stringWithFormat:@"%ld",(long)key]]){
+        return YES;
+    }else{
+        return NO;
+    }
+}
+
+/**
+ *  添加错误代码字典
+ *
+ *  @param errorCodeDictionary 错误字典
+ */
++ (void)addErrorCodeDictionary:(NSDictionary*)errorCodeDictionary{
+    [errorCodeDictionary enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
+        [self addErrorCodeValue:obj forKey:[key integerValue]];
+    }];
+}
+
+/**
+ *  添加错误代码字典
+ *
+ *  @param value 错误值
+ *  @param key   键值对
+ */
++ (void)addErrorCodeValue:(NSString*)value forKey:(NSInteger)key{
+    if ([self existErrorCodeValue:value] && [TXNetWorking existErrorCodeKey:key]) {
+        TXNETLog(@"添加错误代码失败==>存在相同的Value:%ld 相同的Key:%@",(long)key,value);
+    }else{
+        [[self netWorkingManager].privateErrorCodeDictionary setValue:value forKey:[NSString stringWithFormat:@"%ld",(long)key]];
+        TXNETLog(@"添加错误代码成功==>Value:%@ Key:%ld",value,(long)key);
+    }
+}
+
+/** 错误消息名称Key */
+- (void)setErrorMessageNameKey:(NSString *)errorMessageNameKey{
+    _errorMessageNameKey=errorMessageNameKey;
+    TXNETLog(@"错误消息名称Key==>Key:%@",_errorMessageNameKey);
+}
+
+/**
+ *  错误消息名称Key
+ *
+ *  @param errorMessageNameKey 错误消息Key 如:msg
+ */
++ (void)setErrorMessageNameKey:(NSString*)errorMessageNameKey{
+    [self netWorkingManager].errorMessageNameKey=errorMessageNameKey;
+}
+
+#pragma mark- 网络状态
+
+/** 开启网络检测 */
++ (void)openNetworkMonitoring{
+    [self netWorkingManager].aFReachabilityManager=[AFNetworkReachabilityManager sharedManager];
+    [[self netWorkingManager].aFReachabilityManager setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status){
+        switch (status) {
+            case AFNetworkReachabilityStatusUnknown:{
+                [TXNetWorking netWorkingManager].networkStatus=NWNetworkStatusUnknown;
+                [TXNWPushMessage pushNetworkStatusWithNetworkStatus:NWNetworkStatusUnknown];
+            }
+                break;
+            case AFNetworkReachabilityStatusNotReachable:{
+                [TXNetWorking netWorkingManager].networkStatus=NWNetworkStatusReachable;
+                [TXNWPushMessage pushNetworkStatusWithNetworkStatus:NWNetworkStatusReachable];
+            }
+                break;
+            case AFNetworkReachabilityStatusReachableViaWWAN:{
+                [TXNetWorking netWorkingManager].networkStatus=NWNetworkStatusReachableViaWWAN;
+                [TXNWPushMessage pushNetworkStatusWithNetworkStatus:NWNetworkStatusReachableViaWWAN];
+            }
+                break;
+            case AFNetworkReachabilityStatusReachableViaWiFi:{
+                [TXNetWorking netWorkingManager].networkStatus=NWNetworkStatusReachableViaWiFi;
+                [TXNWPushMessage pushNetworkStatusWithNetworkStatus:NWNetworkStatusReachableViaWiFi];
+            }
+                break;
+            default:
+                break;
+        }
+    }];
+    [[self netWorkingManager].aFReachabilityManager startMonitoring];
+}
+
+/** 网络状态 */
+- (void)setNetworkStatus:(NWNetworkStatus)networkStatus{
+    _networkStatus=networkStatus;
+}
+
+#pragma mark- HUD
+
+/**
+ *  显示HUD
+ *  @param showHUDType HUD显示类型
+ *  @param info 信息
+ */
++ (void)showHUDWithShowHUDType:(NWShowHUDType)showHUDType info:(NSString*)info{
+    [TXNWHUD showHUDWithShowHUDType:showHUDType info:info];
+}
+
+/** 消除HUD */
++ (void)dismissHUD{
+    [TXNWHUD dismissHUD];
+}
+
+#pragma mark- 网络请求
 
 /**
  *  post
@@ -247,9 +317,7 @@
         if (netModel.code==[self netWorkingManager].code) {
             if (completionHandler) completionHandler(nil,netModel);
         }else{
-            NSString *errorMessage=[TXNetErrorCode errorMessageWithErrorCodeType:netModel.code];
-            if (completionHandler) completionHandler([NSError errorWithDomain:@"TXNetWorkingError" code:netModel.code userInfo:@{@"msg":errorMessage}],nil);
-            [TXNetErrorCode pushNetWorkRequestErrorWithErrorCodeType:netModel.code];
+            [self pushErrorWithDomain:@"TXNetWorking_Post_Error" code:netModel.code completionHandler:completionHandler];
         }
         if (showHUD) [TXNetWorking dismissHUD];
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
@@ -275,11 +343,9 @@
         TXNETLog(@"get请求==>url:%@ responseObject:%@",strURL,responseObject);
         TXNetModel *netModel=[TXNetModel modelWithDictionary:responseObject];
         if (netModel.code==[self netWorkingManager].code) {
-            if (completionHandler) completionHandler(nil,netModel);
+            [self pushSuccessWithObj:netModel CompletionHandler:completionHandler];
         }else{
-            NSString *errorMessage=[TXNetErrorCode errorMessageWithErrorCodeType:netModel.code];
-            if (completionHandler) completionHandler([NSError errorWithDomain:@"TXNetWorkingError" code:netModel.code userInfo:@{@"msg":errorMessage}],nil);
-            [TXNetErrorCode pushNetWorkRequestErrorWithErrorCodeType:netModel.code];
+             [self pushErrorWithDomain:@"TXNetWorking_Get_Error" code:netModel.code completionHandler:completionHandler];
         }
         if (showHUD) [TXNetWorking dismissHUD];
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
@@ -374,11 +440,9 @@
         TXNETLog(@"上传图片==>url:%@ responseObject:%@",strURL,responseObject);
         TXNetModel *netModel=[TXNetModel modelWithDictionary:responseObject];
         if (netModel.code==[self netWorkingManager].code) {
-            if (completionHandler) completionHandler(nil,netModel);
+            [self pushSuccessWithObj:netModel CompletionHandler:completionHandler];
         }else{
-            NSString *errorMessage=[TXNetErrorCode errorMessageWithErrorCodeType:netModel.code];
-            if (completionHandler) completionHandler([NSError errorWithDomain:@"TXNetWorkingError" code:netModel.code userInfo:@{@"msg":errorMessage}],nil);
-            [TXNetErrorCode pushNetWorkRequestErrorWithErrorCodeType:netModel.code];
+            [self pushErrorWithDomain:@"TXNetWorking_UploadImage_Error" code:netModel.code completionHandler:completionHandler];
         }
         if (showHUD) [TXNetWorking dismissHUD];
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
@@ -469,11 +533,9 @@
         TXNETLog(@"上传文件==>url:%@ responseObject:%@",strURL,responseObject);
         TXNetModel *netModel=[TXNetModel modelWithDictionary:responseObject];
         if (netModel.code==[self netWorkingManager].code) {
-            if (completionHandler) completionHandler(nil,netModel);
+            [self pushSuccessWithObj:netModel CompletionHandler:completionHandler];
         }else{
-            NSString *errorMessage=[TXNetErrorCode errorMessageWithErrorCodeType:netModel.code];
-            if (completionHandler) completionHandler([NSError errorWithDomain:@"TXNetWorkingError" code:netModel.code userInfo:@{@"msg":errorMessage}],nil);
-            [TXNetErrorCode pushNetWorkRequestErrorWithErrorCodeType:netModel.code];
+            [self pushErrorWithDomain:@"TXNetWorking_UploadFile_Error" code:netModel.code completionHandler:completionHandler];
         }
         if (showHUD) [TXNetWorking dismissHUD];
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
@@ -481,6 +543,32 @@
         if (showHUD) [TXNetWorking dismissHUD];
         TXNETLog(@"上传文件==>url:%@ error:%@",strURL,error);
     }];
+}
+
+#pragma mark- 推送
+
+/**
+ *  推送错误
+ *
+ *  @param domain Domain
+ *  @param code 错误代码
+ *  @param completionHandler 完成处理程序
+ */
++ (void)pushErrorWithDomain:(NSString*)domain code:(NSInteger)code completionHandler:(NWCompletionHandler)completionHandler{
+    NSString *errorMessage=[self netWorkingManager].errorCodeDictionary[[NSString stringWithFormat:@"%ld",code]];
+    NSMutableDictionary *userInfo=[NSMutableDictionary dictionary];
+    if (errorMessage) [userInfo setObject:errorMessage forKey:[self netWorkingManager].errorMessageNameKey];
+    if (completionHandler) completionHandler([NSError errorWithDomain:domain code:code userInfo:userInfo],nil);
+    [TXNWPushMessage pushNetWorkRequestErrorWithErrorCode:code];
+}
+
+/**
+ *  推送成功
+ *
+ *  @param completionHandler 完成处理程序
+ */
++ (void)pushSuccessWithObj:(id)obj CompletionHandler:(NWCompletionHandler)completionHandler{
+    if (completionHandler) completionHandler(nil,obj);
 }
 
 @end

@@ -10,7 +10,7 @@ Pod::Spec.new do |s|
   # 组件名称
   s.name             = 'CoreNetWorkingLib'
   # 组件版本
-  s.version          = '0.3.0'
+  s.version          = '0.4.0'
   # 组件概要说明
   s.summary          = '杭州空灵智能科技有限公司基于AFNetworking所开发的网络请求库,支持get、post、upload等功能.'
 

@@ -155,14 +155,32 @@ strip_invalid_archs() {
 if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/CoreNetWorkingLib/CoreNetWorkingLib.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/FLAnimatedImage/FLAnimatedImage.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/HHTransition/HHTransition.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/IQKeyboardManager/IQKeyboardManager.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/MGJRouter/MGJRouter.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/MGJRouterKit/MGJRouterKit.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/SVProgressHUD/SVProgressHUD.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/TXAdapter/TXAdapter.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/TXCoreData/TXCoreData.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/TXModel/TXModel.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/TXNulleSchoolTeacherLoginModule/TXNulleSchoolTeacherLoginModule.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/XHLaunchAd/XHLaunchAd.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/CoreNetWorkingLib/CoreNetWorkingLib.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/FLAnimatedImage/FLAnimatedImage.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/HHTransition/HHTransition.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/IQKeyboardManager/IQKeyboardManager.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/MGJRouter/MGJRouter.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/MGJRouterKit/MGJRouterKit.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/SVProgressHUD/SVProgressHUD.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/TXAdapter/TXAdapter.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/TXCoreData/TXCoreData.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/TXModel/TXModel.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/TXNulleSchoolTeacherLoginModule/TXNulleSchoolTeacherLoginModule.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/XHLaunchAd/XHLaunchAd.framework"
 fi
 if [ "${COCOAPODS_PARALLEL_CODE_SIGN}" == "true" ]; then
   wait

@@ -11,11 +11,12 @@
 #endif
 
 #import "CoreNetworking.h"
-#import "TXNetErrorCode.h"
 #import "TXNetErrorDelegate.h"
 #import "TXNetModel.h"
 #import "TXNetWorking.h"
 #import "TXNetworkStatusDelegate.h"
+#import "TXNWHUD.h"
+#import "TXNWPushMessage.h"
 
 FOUNDATION_EXPORT double CoreNetWorkingLibVersionNumber;
 FOUNDATION_EXPORT const unsigned char CoreNetWorkingLibVersionString[];

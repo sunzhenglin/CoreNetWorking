@@ -7,7 +7,7 @@
 //
 
 #import "TXViewController.h"
-#import "CoreNetworking.h"
+#import "MGJRouterKit.h"
 
 @interface TXViewController ()
 
@@ -18,7 +18,14 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.view.backgroundColor=[UIColor whiteColor];
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(dismiss:)];
+    [self.view addGestureRecognizer:tap];
 	// Do any additional setup after loading the view, typically from a nib.
+}
+
+-(void)dismiss:(UITapGestureRecognizer *)sender{
+    [MGJRouter openURL:@"tx://signOut/nulleSchool/teacher"];
 }
 
 - (void)didReceiveMemoryWarning
