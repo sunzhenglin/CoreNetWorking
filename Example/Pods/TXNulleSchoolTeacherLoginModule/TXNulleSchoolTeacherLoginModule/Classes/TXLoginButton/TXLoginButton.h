@@ -16,6 +16,9 @@ typedef void(^TXLOAnimationCompletion) (void);
 /** 登录按钮 */
 @interface TXLoginButton : UIButton
 
+/** 失败背景颜色 */
+@property (nonatomic,strong)UIColor *failedBackgroundColor;
+
 /** 登录失败回调 */
 - (void)failedAnimationWithCompletion:(TXLOAnimationCompletion)completion;
 

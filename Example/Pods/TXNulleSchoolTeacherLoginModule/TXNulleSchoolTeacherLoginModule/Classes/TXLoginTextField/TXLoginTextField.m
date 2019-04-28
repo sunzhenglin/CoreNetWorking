@@ -46,17 +46,14 @@ CGFloat const txLoginPlaceholderNormalFontSize=15.0f;
         [self addSubview:self.textField];
         
         self.placeholderLabel = [[UILabel alloc]initWithFrame:CGRectZero];
-        self.placeholderLabel.textColor = [UIColor lightGrayColor];
         [self addSubview:self.placeholderLabel];
         
         self.lineView = [[UIView alloc]initWithFrame:CGRectZero];
         self.lineView.backgroundColor = [UIColor lightGrayColor];
         [self addSubview:self.lineView];
-        
         self.lineLayer = [CALayer layer];
         self.lineLayer.frame = CGRectMake(0,0, 0, txLoginLineHeight);
         self.lineLayer.anchorPoint = CGPointMake(0, 0.5);
-        self.lineLayer.backgroundColor = [UIColor whiteColor].CGColor;
         [self.lineView.layer addSublayer:self.lineLayer];
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(obserValue:) name:UITextFieldTextDidChangeNotification object:self.textField];
@@ -71,6 +68,8 @@ CGFloat const txLoginPlaceholderNormalFontSize=15.0f;
         self.textFont = [UIFont systemFontOfSize:txLoginTextFontSize];
         self.placeholderNormalStateFont = [UIFont systemFontOfSize:txLoginPlaceholderNormalFontSize];
         self.placeholderSelectStateFont = [UIFont systemFontOfSize:txLoginPlaceholderSelectFontSize];
+        self.lineColor = [UIColor lightGrayColor];
+        self.lineLayerColor = [UIColor lightGrayColor];
     }
     return self;
 }
@@ -222,6 +221,18 @@ CGFloat const txLoginPlaceholderNormalFontSize=15.0f;
 /** 文本 */
 - (NSString*)text{
     return self.textField.text;
+}
+
+/** 线的颜色 */
+- (void)setLineColor:(UIColor *)lineColor{
+    _lineColor = lineColor;
+    self.lineView.backgroundColor = _lineColor;
+}
+
+/** 线的Layer颜色 */
+- (void)setLineLayerColor:(UIColor *)lineLayerColor{
+    _lineLayerColor = lineLayerColor;
+    self.lineLayer.backgroundColor = _lineLayerColor.CGColor;
 }
 
 /** dealloc */

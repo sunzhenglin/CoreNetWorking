@@ -7,7 +7,6 @@
 //
 
 #import "TXNetErrorDelegate.h"
-#import "TXNWPushMessage.h"
 #import "TXNetWorking.h"
 
 @implementation TXNetErrorDelegate

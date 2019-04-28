@@ -12,7 +12,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 /** 登录TextField */
 @interface TXLoginTextField : UIView
-
 /** 注释信息 */
 @property (nonatomic,copy)NSString *tx_placeholder;
 /** 光标颜色 */
@@ -39,6 +38,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic,strong)UIFont *placeholderSelectStateFont;
 /** 文本 */
 @property (nonatomic,copy)NSString *text;
-
+/** 线的颜色 */
+@property (nonatomic,strong)UIColor *lineColor;
+/** 线的Layer颜色 */
+@property (nonatomic,strong)UIColor *lineLayerColor;
 @end
 NS_ASSUME_NONNULL_END

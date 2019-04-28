@@ -7,14 +7,17 @@
 //
 
 #import <Foundation/Foundation.h>
+@class TXNetErrorDelegate;
 
 /** 错误代码代理 */
-@class TXNetErrorDelegate;
 @protocol TXNetWorkRequestErrorDelegate <NSObject>
 @optional
+
 /** 错误类型 */
 - (void)netErrorDelegate:(TXNetErrorDelegate*)netErrorDelegate errorCode:(NSInteger)errorCode errorCodeString:(NSString*)errorCodeString;
+
 @end
+
 @interface TXNetErrorDelegate : NSObject
 /** 代理属性 */
 @property (nonatomic,weak)id <TXNetWorkRequestErrorDelegate> delegate;

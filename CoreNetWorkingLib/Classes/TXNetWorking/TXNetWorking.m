@@ -7,7 +7,6 @@
 //
 
 #import "TXNetWorking.h"
-#import "TXNWPushMessage.h"
 
 /** DEBUG 打印日志 */
 #if DEBUG
@@ -217,13 +216,17 @@
  *
  *  @param value 错误值
  *  @param key   键值对
+ *
+ *  @return BOOL 是否添加成功
  */
-+ (void)addErrorCodeValue:(NSString*)value forKey:(NSInteger)key{
++ (BOOL)addErrorCodeValue:(NSString*)value forKey:(NSInteger)key{
     if ([self existErrorCodeValue:value] && [TXNetWorking existErrorCodeKey:key]) {
         TXNETLog(@"添加错误代码失败==>存在相同的Value:%ld 相同的Key:%@",(long)key,value);
+        return NO;
     }else{
         [[self netWorkingManager].privateErrorCodeDictionary setValue:value forKey:[NSString stringWithFormat:@"%ld",(long)key]];
         TXNETLog(@"添加错误代码成功==>Value:%@ Key:%ld",value,(long)key);
+        return YES;
     }
 }
 
@@ -312,14 +315,14 @@
     //开始请求
     [[self netWorkingManager].aFHTTPManager POST:strURL parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        TXNETLog(@"post请求==>url:%@ responseObject:%@",strURL,responseObject);
         TXNetModel *netModel=[TXNetModel modelWithDictionary:responseObject];
         if (netModel.code==[self netWorkingManager].code) {
-            if (completionHandler) completionHandler(nil,netModel);
+            [self pushSuccessWithObj:netModel completionHandler:completionHandler];
         }else{
-            [self pushErrorWithDomain:@"TXNetWorking_Post_Error" code:netModel.code completionHandler:completionHandler];
+            [self pushErrorWithCode:netModel.code completionHandler:completionHandler];
         }
         if (showHUD) [TXNetWorking dismissHUD];
+        TXNETLog(@"post请求==>url:%@ responseObject:%@",strURL,responseObject);
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         if (completionHandler) completionHandler(error,nil);
         if (showHUD) [TXNetWorking dismissHUD];
@@ -340,14 +343,14 @@
     //开始请求
     [[self netWorkingManager].aFHTTPManager GET:strURL parameters:parameters progress:^(NSProgress * _Nonnull downloadProgress) {
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        TXNETLog(@"get请求==>url:%@ responseObject:%@",strURL,responseObject);
         TXNetModel *netModel=[TXNetModel modelWithDictionary:responseObject];
         if (netModel.code==[self netWorkingManager].code) {
-            [self pushSuccessWithObj:netModel CompletionHandler:completionHandler];
+            [self pushSuccessWithObj:netModel completionHandler:completionHandler];
         }else{
-             [self pushErrorWithDomain:@"TXNetWorking_Get_Error" code:netModel.code completionHandler:completionHandler];
+             [self pushErrorWithCode:netModel.code completionHandler:completionHandler];
         }
         if (showHUD) [TXNetWorking dismissHUD];
+        TXNETLog(@"get请求==>url:%@ responseObject:%@",strURL,responseObject);
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         if (completionHandler) completionHandler(error,nil);
         if (showHUD) [TXNetWorking dismissHUD];
@@ -437,14 +440,14 @@
         }
     } progress:^(NSProgress * _Nonnull uploadProgress) {
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        TXNETLog(@"上传图片==>url:%@ responseObject:%@",strURL,responseObject);
         TXNetModel *netModel=[TXNetModel modelWithDictionary:responseObject];
         if (netModel.code==[self netWorkingManager].code) {
-            [self pushSuccessWithObj:netModel CompletionHandler:completionHandler];
+            [self pushSuccessWithObj:netModel completionHandler:completionHandler];
         }else{
-            [self pushErrorWithDomain:@"TXNetWorking_UploadImage_Error" code:netModel.code completionHandler:completionHandler];
+             [self pushErrorWithCode:netModel.code completionHandler:completionHandler];
         }
         if (showHUD) [TXNetWorking dismissHUD];
+        TXNETLog(@"上传图片==>url:%@ responseObject:%@",strURL,responseObject);
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         if (completionHandler) completionHandler(error,nil);
         if (showHUD) [TXNetWorking dismissHUD];
@@ -530,14 +533,14 @@
         }
     } progress:^(NSProgress * _Nonnull uploadProgress) {
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        TXNETLog(@"上传文件==>url:%@ responseObject:%@",strURL,responseObject);
         TXNetModel *netModel=[TXNetModel modelWithDictionary:responseObject];
         if (netModel.code==[self netWorkingManager].code) {
-            [self pushSuccessWithObj:netModel CompletionHandler:completionHandler];
+            [self pushSuccessWithObj:netModel completionHandler:completionHandler];
         }else{
-            [self pushErrorWithDomain:@"TXNetWorking_UploadFile_Error" code:netModel.code completionHandler:completionHandler];
+             [self pushErrorWithCode:netModel.code completionHandler:completionHandler];
         }
         if (showHUD) [TXNetWorking dismissHUD];
+        TXNETLog(@"上传文件==>url:%@ responseObject:%@",strURL,responseObject);
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         if (completionHandler) completionHandler(error,nil);
         if (showHUD) [TXNetWorking dismissHUD];
@@ -550,16 +553,13 @@
 /**
  *  推送错误
  *
- *  @param domain Domain
  *  @param code 错误代码
  *  @param completionHandler 完成处理程序
  */
-+ (void)pushErrorWithDomain:(NSString*)domain code:(NSInteger)code completionHandler:(NWCompletionHandler)completionHandler{
++ (void)pushErrorWithCode:(NSInteger)code completionHandler:(NWCompletionHandler)completionHandler{
     NSString *errorMessage=[self netWorkingManager].errorCodeDictionary[[NSString stringWithFormat:@"%ld",code]];
-    NSMutableDictionary *userInfo=[NSMutableDictionary dictionary];
-    if (errorMessage) [userInfo setObject:errorMessage forKey:[self netWorkingManager].errorMessageNameKey];
-    if (completionHandler) completionHandler([NSError errorWithDomain:domain code:code userInfo:userInfo],nil);
-    [TXNWPushMessage pushNetWorkRequestErrorWithErrorCode:code];
+    NSError*error=[TXNWPushMessage pushNetWorkRequestErrorWithErrorCode:code value:errorMessage];
+    if (completionHandler) completionHandler(error,nil);
 }
 
 /**
@@ -567,7 +567,7 @@
  *
  *  @param completionHandler 完成处理程序
  */
-+ (void)pushSuccessWithObj:(id)obj CompletionHandler:(NWCompletionHandler)completionHandler{
++ (void)pushSuccessWithObj:(id)obj completionHandler:(NWCompletionHandler)completionHandler{
     if (completionHandler) completionHandler(nil,obj);
 }
 

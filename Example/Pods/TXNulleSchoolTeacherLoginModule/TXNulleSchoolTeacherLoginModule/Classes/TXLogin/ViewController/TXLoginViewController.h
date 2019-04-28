@@ -21,7 +21,7 @@ typedef UIViewController *_Nonnull(^TXLICompletionHandler) (NSError *_Nullable e
 + (void)setupRequestHeader;
 /** 移除请求头 */
 + (void)removeRequestHeader;
-/** 移除用户全部数据(移除登录数据/用户数据/请求头)*/
+/** 移除用户全部数据(移除登录数据/用户数据/请求头) */
 + (void)removeUserAllData;
 @end
 

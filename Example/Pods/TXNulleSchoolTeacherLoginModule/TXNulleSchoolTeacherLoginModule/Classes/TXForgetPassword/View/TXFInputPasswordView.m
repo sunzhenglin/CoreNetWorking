@@ -15,7 +15,7 @@
     if (self = [super initWithFrame:frame]) {
         // 标题
         UILabel *titleLabel = [[UILabel alloc]init];
-        titleLabel.textColor = [UIColor whiteColor];
+        titleLabel.textColor = TXLFRGBA(66, 66, 66, 1);
         titleLabel.font = [UIFont systemFontOfSize:tRealFontSize(17)];
         titleLabel.textAlignment = NSTextAlignmentCenter;
         titleLabel.text = @"找回密码(3/3)";
@@ -31,14 +31,22 @@
         // 密码
         TXLoginTextField *password = [[TXLoginTextField alloc]init];
         password.tx_placeholder = @"请输入密码";
-        password.placeholderNormalStateColor = [UIColor whiteColor];
-        password.placeholderSelectStateColor = [UIColor whiteColor];
+        password.placeholderNormalStateColor = TXLFRGBA(205, 205, 205, 1);
+        password.placeholderSelectStateColor = TXLFRGBA(66, 66, 66, 1);
+        password.cursorColor = TXLFRGBA(205, 205, 205, 1);
+        password.textColor = TXLFRGBA(66, 66, 66, 1);
+        password.lineColor = TXLFRGBA(231, 231, 231, 1);
+        password.lineLayerColor = TXLFRGBA(66, 66, 66, 0.5);
         password.secureTextEntry = YES;
         // 确认密码
         TXLoginTextField *confirmPassword = [[TXLoginTextField alloc]init];
         confirmPassword.tx_placeholder = @"请输入确认密码";
-        confirmPassword.placeholderNormalStateColor = [UIColor whiteColor];
-        confirmPassword.placeholderSelectStateColor = [UIColor whiteColor];
+        confirmPassword.placeholderNormalStateColor = TXLFRGBA(205, 205, 205, 1);
+        confirmPassword.placeholderSelectStateColor = TXLFRGBA(66, 66, 66, 1);
+        confirmPassword.cursorColor = TXLFRGBA(205, 205, 205, 1);
+        confirmPassword.textColor = TXLFRGBA(66, 66, 66, 1);
+        confirmPassword.lineColor = TXLFRGBA(231, 231, 231, 1);
+        confirmPassword.lineLayerColor = TXLFRGBA(66, 66, 66, 0.5);
         confirmPassword.secureTextEntry = YES;
         // 添加视图
         [self addSubview:titleLabel];
@@ -95,7 +103,8 @@
         CGFloat nextY = CGRectGetMaxY(self.confirmPassword.frame)+tRealLength(30);;
         TXLoginButton *next= [[TXLoginButton alloc]initWithFrame:CGRectMake(nextX, nextY, nextW, nextH)];
         [next setTitle:@"确认修改" forState:UIControlStateNormal];
-        [next setBackgroundColor:[UIColor colorWithRed:1 green:0.f/255.0f blue:128.0f/255.0f alpha:1]];
+        [next setBackgroundColor:TXLFRGBA(46, 175, 250, 1)];
+        [next setFailedBackgroundColor:TXLFRGBA(46, 175, 250, 1)];
         [next addTarget:self action:@selector(nextEvent:) forControlEvents:UIControlEventTouchUpInside];
         next.titleLabel.font = [UIFont systemFontOfSize:tRealFontSize(13)];
         [self addSubview:next];

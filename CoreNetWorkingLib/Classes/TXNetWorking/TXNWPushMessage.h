@@ -19,11 +19,40 @@ FOUNDATION_EXPORT NSString *const TXNetworkMonitoringNotification;
 /** 网络状态Key */
 FOUNDATION_EXPORT NSString *const networkStatusKey;
 
+/** 网络错误Domain */
+FOUNDATION_EXPORT NSString *const TXNetWorkErrorDomain;
+
+
 @interface TXNWPushMessage : NSObject
-/** 推送错误代码 */
-+ (void)pushNetWorkRequestErrorWithErrorCode:(NSInteger)errorCode;
-/** 推送网络状态 */
-+ (void)pushNetworkStatusWithNetworkStatus:(NSInteger)networkStatus;
+
+/**
+ *  推送错误代码
+ *
+ *  @param errorCode 错误代码
+ *
+ *  @return NSError 错误
+ */
++ (NSError*)pushNetWorkRequestErrorWithErrorCode:(NSInteger)errorCode;
+
+/**
+ *  推送错误代码
+ *
+ *  @param errorCode 错误代码
+ *  @param value 错误码的值
+ *
+ *  @return NSError 错误
+ */
++ (NSError*)pushNetWorkRequestErrorWithErrorCode:(NSInteger)errorCode value:(NSString*)value;
+
+/**
+ *  推送网络状态
+ *
+ *  @param networkStatus 错误代码 （-1 至 2 有效）
+ *
+ *  @return NSInteger 网络状态
+ */
++ (NSInteger)pushNetworkStatusWithNetworkStatus:(NSInteger)networkStatus;
+
 @end
 
 NS_ASSUME_NONNULL_END

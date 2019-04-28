@@ -15,16 +15,19 @@
     if (self = [super initWithFrame:frame]) {
         // 标题
         UILabel *titleLabel = [[UILabel alloc]init];
-        titleLabel.textColor = [UIColor whiteColor];
+        titleLabel.textColor = TXLFRGBA(66, 66, 66, 1);
         titleLabel.font = [UIFont systemFontOfSize:tRealFontSize(17)];
         titleLabel.textAlignment = NSTextAlignmentCenter;
         titleLabel.text = @"找回密码(1/3)";
         // textField
         TXLoginTextField *textField = [[TXLoginTextField alloc]init];
         textField.tx_placeholder = @"请输入手机号码";
-        textField.placeholderNormalStateColor = [UIColor whiteColor];
-        textField.placeholderSelectStateColor = [UIColor whiteColor];
-        textField.keyboardType = UIKeyboardTypeNumberPad;
+        textField.placeholderNormalStateColor = TXLFRGBA(205, 205, 205, 1);
+        textField.placeholderSelectStateColor = TXLFRGBA(66, 66, 66, 1);
+        textField.cursorColor = TXLFRGBA(205, 205, 205, 1);
+        textField.textColor = TXLFRGBA(66, 66, 66, 1);
+        textField.lineColor = TXLFRGBA(231, 231, 231, 1);
+        textField.lineLayerColor = TXLFRGBA(66, 66, 66, 0.5);
         // 添加视图
         [self addSubview:titleLabel];
         [self addSubview:textField];
@@ -62,7 +65,8 @@
         CGFloat nextY = CGRectGetMaxY(self.textField.frame)+tRealLength(40);
         TXLoginButton *next= [[TXLoginButton alloc]initWithFrame:CGRectMake(nextX, nextY, nextW, nextH)];
         [next setTitle:@"下一步" forState:UIControlStateNormal];
-        [next setBackgroundColor:[UIColor colorWithRed:1 green:0.f/255.0f blue:128.0f/255.0f alpha:1]];
+        [next setBackgroundColor:TXLFRGBA(46, 175, 250, 1)];
+        [next setFailedBackgroundColor:TXLFRGBA(46, 175, 250, 1)];
         [next addTarget:self action:@selector(nextEvent:) forControlEvents:UIControlEventTouchUpInside];
         next.titleLabel.font = [UIFont systemFontOfSize:tRealFontSize(13)];
         [self addSubview:next];

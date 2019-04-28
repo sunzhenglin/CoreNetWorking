@@ -10,6 +10,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class TXNetworkStatusDelegate;
+
 /** 网络状态 */
 typedef NS_ENUM(NSInteger,NWNetworkStatus){
     /** 未识别的网络*/
@@ -23,12 +25,14 @@ typedef NS_ENUM(NSInteger,NWNetworkStatus){
 };
 
 /** 网络状态代理 */
-@class TXNetworkStatusDelegate;
 @protocol TXNetworkStatusDelegate <NSObject>
 @optional
+
 /** 网络状态 */
 - (void)networkStatusDelegate:(TXNetworkStatusDelegate*)networkStatusDelegate networkStatus:(NWNetworkStatus)networkStatus;
+
 @end
+
 @interface TXNetworkStatusDelegate : NSObject
 /** 代理属性 */
 @property (nonatomic,weak)id <TXNetworkStatusDelegate> delegate;

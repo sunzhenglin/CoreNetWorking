@@ -28,9 +28,11 @@
         self.expandCurve = [CAMediaTimingFunction functionWithControlPoints:0.95 :0.02 :1 :0.05];
         self.shrinkDuration = 0.1;
         [self.layer addSublayer:self.loginShapeLayer];
+        
         // 配置
+        self.failedBackgroundColor=[UIColor redColor];
         self.layer.cornerRadius = CGRectGetHeight(self.bounds) / 2;
-        self.clipsToBounds = true;
+        self.clipsToBounds = YES;
         [self addTarget:self action:@selector(scaleToSmall)
        forControlEvents:UIControlEventTouchDown | UIControlEventTouchDragEnter];
         [self addTarget:self action:@selector(scaleAnimation)
@@ -104,15 +106,15 @@
     shrinkAnim.duration = self.shrinkDuration;
     shrinkAnim.timingFunction = self.shrinkCurve;
     shrinkAnim.fillMode = kCAFillModeForwards;
-    shrinkAnim.removedOnCompletion = false;
+    shrinkAnim.removedOnCompletion = NO;
     self.color = self.backgroundColor;
     
     CABasicAnimation *backgroundColor = [CABasicAnimation animationWithKeyPath:@"backgroundColor"];
-    backgroundColor.toValue  = (__bridge id)[UIColor redColor].CGColor;
+    backgroundColor.toValue  = (__bridge id)self.failedBackgroundColor.CGColor;
     backgroundColor.duration = 0.1f;
     backgroundColor.timingFunction = self.shrinkCurve;
     backgroundColor.fillMode = kCAFillModeForwards;
-    backgroundColor.removedOnCompletion = false;
+    backgroundColor.removedOnCompletion = NO;
     
     CAKeyframeAnimation *keyFrame = [CAKeyframeAnimation animationWithKeyPath:@"position"];
     CGPoint point = self.layer.position;
@@ -170,7 +172,7 @@
     backgroundColor.duration = 0.1f;
     backgroundColor.timingFunction = self.shrinkCurve;
     backgroundColor.fillMode = kCAFillModeForwards;
-    backgroundColor.removedOnCompletion = false;
+    backgroundColor.removedOnCompletion = NO;
     [self.layer addAnimation:backgroundColor forKey:@"backgroundColors"];
     
 }

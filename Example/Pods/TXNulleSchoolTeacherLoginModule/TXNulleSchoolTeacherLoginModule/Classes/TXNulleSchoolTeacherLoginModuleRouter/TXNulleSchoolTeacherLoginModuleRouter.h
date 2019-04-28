@@ -26,9 +26,11 @@ FOUNDATION_EXPORT NSString *const TXForgetPasswordCompletionHandlerKey;
  *
  *  操作说明
  *
+    // 创建参数
     NSMutableDictionary *parameters=[NSMutableDictionary dictionary];
-    // 登录回调
+    // 定义登录回调代码块
     typedef UIViewController *_Nonnull(^TXLICompletionHandler) (NSError *_Nullable error  ,id _Nullable obj);
+    // 登录回调
     TXLICompletionHandler loginCompletionHandler = ^(NSError *_Nullable error  ,id _Nullable obj){
     UINavigationController *navigationController=[[UINavigationController alloc]initWithRootViewController:[TXViewController new]];
     return navigationController;
@@ -40,6 +42,7 @@ FOUNDATION_EXPORT NSString *const TXForgetPasswordCompletionHandlerKey;
     [parameters setValue:forgetPasswordCompletionHandler forKey:@"forgetPasswordCompletionHandler"];
     self.window.rootViewController = [MGJRouter objectForURL:@"tx://get/nulleSchool/teacher/loginModule" withUserInfo:parameters];
     [self.window makeKeyAndVisible];
+ *
 */
 
 @interface TXNulleSchoolTeacherLoginModuleRouter : NSObject

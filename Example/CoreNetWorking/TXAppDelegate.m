@@ -24,6 +24,9 @@
     [TXNetWorking addErrorCodeValue:@"未找到科目" forKey:4064];
     [TXNetWorking addErrorCodeValue:@"Uface注册失败" forKey:4029];
     
+    self.netErrorDelegate=[TXNetErrorDelegate new];
+    self.netErrorDelegate.delegate=self;
+    
     // 创建参数
     NSMutableDictionary *parameters=[NSMutableDictionary dictionary];
     // 定义登录回调代码块

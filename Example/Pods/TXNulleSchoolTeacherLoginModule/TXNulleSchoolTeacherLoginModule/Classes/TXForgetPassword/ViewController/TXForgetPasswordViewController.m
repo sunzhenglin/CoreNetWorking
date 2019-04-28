@@ -24,10 +24,10 @@ typedef NS_ENUM(NSInteger,LRViewFunctionType){
 };
 
 @interface TXForgetPasswordViewController ()
+/** 背景图 */
+@property (nonatomic,strong)UIImageView *backgroundImageView;
 /** 登录ViewModel */
 @property (nonatomic,strong)TXLoginViewModel *loginViewModel;
-/** 背景层  */
-@property (nonatomic,strong)CAGradientLayer *backgroundLayer;
 /** 输入手机号 */
 @property (nonatomic,weak)TXFInputPhoneNumberView *inputPhoneNumberView;
 /** 输入验证码 */
@@ -52,18 +52,6 @@ typedef NS_ENUM(NSInteger,LRViewFunctionType){
     return _loginViewModel;
 };
 
-/** 背景层 */
-- (CAGradientLayer *)backgroundLayer{
-    if (!_backgroundLayer) {
-        _backgroundLayer = [CAGradientLayer layer];
-        _backgroundLayer.colors = @[(__bridge id)TXLFRGBA(33,148,249,1.f).CGColor,(__bridge id)[UIColor cyanColor].CGColor];
-        _backgroundLayer.startPoint = CGPointMake(0.5, 0);
-        _backgroundLayer.endPoint = CGPointMake(0.5, 1);
-        _backgroundLayer.locations = @[@0.68,@1];
-    }
-    return _backgroundLayer;
-}
-
 /** viewDidLoad */
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -74,11 +62,24 @@ typedef NS_ENUM(NSInteger,LRViewFunctionType){
 
 /** 设置设置视图 */
 - (void)setupLayout{
-    // 背景层
-    [self.view.layer addSublayer:self.backgroundLayer];
+    
+    CGFloat viewW = self.view.frame.size.width;
+    CGFloat viewH = self.view.frame.size.height;
+    
+    // 背景图
+    CGFloat backgroundImageViewX = tRealLength(0);
+    CGFloat backgroundImageViewY = tRealLength(0);
+    CGFloat backgroundImageViewW = viewW;
+    CGFloat backgroundImageViewH = viewH;
+    NSBundle *myBundle = [TXURBundle bundleWithClass:self.class resource:TXNulleSchoolTeacherLoginModule_Bundle_Name];
+    self.backgroundImageView=[[UIImageView alloc]initWithFrame:CGRectMake(backgroundImageViewX, backgroundImageViewY, backgroundImageViewW, backgroundImageViewH)];
+    NSString *backgroundImagePath = [myBundle pathForResource:@"forget_password_background_image" ofType:@"png" inDirectory:nil];
+    UIImage *backgroundImage = [UIImage imageWithContentsOfFile:backgroundImagePath];
+    self.backgroundImageView.image = backgroundImage;
+    self.backgroundImageView.userInteractionEnabled = YES;
+    [self.view addSubview:self.backgroundImageView];
     // 向下
     UIButton *downButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    NSBundle *myBundle=[TXURBundle bundleWithClass:self.class resource:TXNulleSchoolTeacherLoginModule_Bundle_Name];
     NSString *imagePath=[myBundle pathForResource:@"forget_password_down" ofType:@"png" inDirectory:nil];
     UIImage *image=[UIImage imageWithContentsOfFile:imagePath];
     [downButton setImage:image forState:UIControlStateNormal];
@@ -90,10 +91,10 @@ typedef NS_ENUM(NSInteger,LRViewFunctionType){
     // 输入密码
     TXFInputPasswordView *inputPasswordView = [[TXFInputPasswordView alloc]init];
     // 添加视图
-    [self.view addSubview:downButton];
-    [self.view addSubview:inputPhoneNumberView];
-    [self.view addSubview:inputVerificationCodeView];
-    [self.view addSubview:inputPasswordView];
+    [self.backgroundImageView addSubview:downButton];
+    [self.backgroundImageView addSubview:inputPhoneNumberView];
+    [self.backgroundImageView addSubview:inputVerificationCodeView];
+    [self.backgroundImageView addSubview:inputPasswordView];
     // 赋值
     self.downButton = downButton;
     self.inputPhoneNumberView = inputPhoneNumberView;
@@ -106,12 +107,6 @@ typedef NS_ENUM(NSInteger,LRViewFunctionType){
     [super viewDidLayoutSubviews];
     CGFloat viewW = self.view.frame.size.width;
     CGFloat viewH = self.view.frame.size.height;
-    // 背景层
-    CGFloat backgroundLayerX = tRealLength(0);
-    CGFloat backgroundLayerY = tRealLength(0);
-    CGFloat backgroundLayerW = viewW;
-    CGFloat backgroundLayerH = viewH;
-    self.backgroundLayer.frame = CGRectMake(backgroundLayerX, backgroundLayerY, backgroundLayerW, backgroundLayerH);
     // 绘制圆角 要设置的圆角 使用“|”来组合
     UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:self.view.bounds byRoundingCorners:UIRectCornerTopLeft | UIRectCornerTopRight cornerRadii:CGSizeMake(tRealLength(15), tRealLength(15))];
     CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
@@ -147,10 +142,9 @@ typedef NS_ENUM(NSInteger,LRViewFunctionType){
                 }];
             }else{
                 // 验证码获取失败
-                [weakSelf.inputPhoneNumberView.next failedAnimationWithCompletion:^{
-                    [TXNetWorking showHUDWithShowHUDType:NWShowHUDTypeFailureInfo info:error.userInfo[@"msg"]];
-                    if (weakSelf.forgetPasswordCompletionHandler) weakSelf.forgetPasswordCompletionHandler(error, obj);
-                }];
+                [TXNetWorking showHUDWithShowHUDType:NWShowHUDTypeFailureInfo info:error.userInfo[@"msg"]];
+                [weakSelf.inputPhoneNumberView.next failedAnimationWithCompletion:^{}];
+                if (weakSelf.forgetPasswordCompletionHandler) weakSelf.forgetPasswordCompletionHandler(error, obj);
             }
         }else if (weakSelf.loginViewModel.operationType==LROperationTypeChangePassword){
             if (!error) {
@@ -164,10 +158,9 @@ typedef NS_ENUM(NSInteger,LRViewFunctionType){
                 }];
             }else{
                 // 修改失败
-                [weakSelf.inputPasswordView.next failedAnimationWithCompletion:^{
-                    [TXNetWorking showHUDWithShowHUDType:NWShowHUDTypeFailureInfo info:error.userInfo[@"msg"]];
-                    if (weakSelf.forgetPasswordCompletionHandler) weakSelf.forgetPasswordCompletionHandler(error, obj);
-                }];
+                [TXNetWorking showHUDWithShowHUDType:NWShowHUDTypeFailureInfo info:error.userInfo[@"msg"]];
+                [weakSelf.inputPasswordView.next failedAnimationWithCompletion:^{}];
+                if (weakSelf.forgetPasswordCompletionHandler) weakSelf.forgetPasswordCompletionHandler(error, obj);
             }
         }
     };

@@ -15,7 +15,7 @@
     if (self = [super initWithFrame:frame]) {
         // 标题
         UILabel *titleLabel = [[UILabel alloc]init];
-        titleLabel.textColor = [UIColor whiteColor];
+        titleLabel.textColor = TXLFRGBA(66, 66, 66, 1);
         titleLabel.font = [UIFont systemFontOfSize:tRealFontSize(17)];
         titleLabel.textAlignment = NSTextAlignmentCenter;
         titleLabel.text = @"找回密码(2/3)";
@@ -30,8 +30,8 @@
         TXLRPassWordView * verificationCodeView= [[TXLRPassWordView alloc]init];
         verificationCodeView.showType = TXPassShowTypeDisplayNumbersBoxesWithIntervals;
         verificationCodeView.number = 6;
-        verificationCodeView.tintColor=[UIColor whiteColor];
-        verificationCodeView.textColor=[UIColor whiteColor];
+        verificationCodeView.tintColor=TXLFRGBA(46, 175, 250, 1);
+        verificationCodeView.textColor=TXLFRGBA(66, 66, 66, 1);
         // 添加视图
         [self addSubview:titleLabel];
         [self addSubview:up];

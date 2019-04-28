@@ -26,6 +26,7 @@ typedef NS_ENUM(NSInteger,NWShowHUDType){
  *  @param info 信息
  */
 + (void)showHUDWithShowHUDType:(NWShowHUDType)showHUDType info:(NSString*)info;
+
 /** 消除HUD */
 + (void)dismissHUD;
 @end

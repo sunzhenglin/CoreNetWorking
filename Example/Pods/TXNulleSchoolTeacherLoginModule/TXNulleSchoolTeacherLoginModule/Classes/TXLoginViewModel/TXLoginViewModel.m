@@ -32,16 +32,10 @@
 - (void)loginWithAccount:(NSString*)account password:(NSString*)password{
     self.operationType=LROperationTypeLogIn;
     if (!account || account.length<=0) {
-        NSString *msg=@"账号不能为空";
-        NSMutableDictionary *dictionary=[NSMutableDictionary dictionary];
-        [dictionary setObject:msg forKey:@"msg"];
-        NSError *error=[NSError errorWithDomain:@"LoginError" code:-10000 userInfo:dictionary];
+        NSError*error=[TXNWPushMessage pushNetWorkRequestErrorWithErrorCode:-10000 value:@"账号不能为空"];
         if (self.completionHandler) self.completionHandler(error, nil);
     }else if (!password || password.length<=0){
-        NSString *msg=@"密码不能为空";
-        NSMutableDictionary *dictionary=[NSMutableDictionary dictionary];
-        [dictionary setObject:msg forKey:@"msg"];
-        NSError *error=[NSError errorWithDomain:@"LoginError" code:-10001 userInfo:dictionary];
+        NSError*error=[TXNWPushMessage pushNetWorkRequestErrorWithErrorCode:-10001 value:@"密码不能为空"];
         if (self.completionHandler) self.completionHandler(error, nil);
     }else{
         __weak typeof(self) weakSelf=self;
@@ -65,10 +59,7 @@
 - (void)getUserInfoWithToken:(NSString*)token{
     self.operationType=LROperationTypeGetUserInfo;
     if (!token || token.length<=0) {
-        NSString *msg=@"token不能为空";
-        NSMutableDictionary *dictionary=[NSMutableDictionary dictionary];
-        [dictionary setObject:msg forKey:@"msg"];
-        NSError *error=[NSError errorWithDomain:@"GetUserInfoError" code:-10002 userInfo:dictionary];
+        NSError*error=[TXNWPushMessage pushNetWorkRequestErrorWithErrorCode:-10000 value:@"Token不能为空"];
         if (self.completionHandler) self.completionHandler(error, nil);
     }else{
         /*设置请求头*/
@@ -91,10 +82,7 @@
 - (void)getForgotPasswordVerificationCodeWithPhoneNumber:(NSString*)phoneNumber{
     self.operationType=LROperationTypeGetForgotPasswordVerificationCode;
     if (!phoneNumber || phoneNumber.length<=0) {
-        NSString *msg=@"手机号不能为空";
-        NSMutableDictionary *dictionary=[NSMutableDictionary dictionary];
-        [dictionary setObject:msg forKey:@"msg"];
-        NSError *error=[NSError errorWithDomain:@"GetForgotPasswordVerificationCodeError" code:-10003 userInfo:dictionary];
+        NSError*error=[TXNWPushMessage pushNetWorkRequestErrorWithErrorCode:-10000 value:@"手机号不能为空"];
         if (self.completionHandler) self.completionHandler(error, nil);
     }else{
         __weak typeof(self) weakSelf=self;
@@ -119,34 +107,19 @@
 - (void)changePasswordWithAccount:(NSString*)account verificationCode:(NSString*)verificationCode password:(NSString*)password confirmPassword:(NSString*)confirmPassword{
     self.operationType=LROperationTypeChangePassword;
     if (!account || account.length<=0) {
-        NSString *msg=@"账号不能为空";
-        NSMutableDictionary *dictionary=[NSMutableDictionary dictionary];
-        [dictionary setObject:msg forKey:@"msg"];
-        NSError *error=[NSError errorWithDomain:@"ChangePasswordError" code:-10000 userInfo:dictionary];
+        NSError*error=[TXNWPushMessage pushNetWorkRequestErrorWithErrorCode:-10000 value:@"账号不能为空"];
         if (self.completionHandler) self.completionHandler(error, nil);
     }else if (!verificationCode || verificationCode.length<=0) {
-        NSString *msg=@"验证码不能为空";
-        NSMutableDictionary *dictionary=[NSMutableDictionary dictionary];
-        [dictionary setObject:msg forKey:@"msg"];
-        NSError *error=[NSError errorWithDomain:@"ChangePasswordError" code:-10001 userInfo:dictionary];
+        NSError*error=[TXNWPushMessage pushNetWorkRequestErrorWithErrorCode:-10001 value:@"验证码不能为空"];
         if (self.completionHandler) self.completionHandler(error, nil);
     }else if (!password || password.length<=0){
-        NSString *msg=@"密码不能为空";
-        NSMutableDictionary *dictionary=[NSMutableDictionary dictionary];
-        [dictionary setObject:msg forKey:@"msg"];
-        NSError *error=[NSError errorWithDomain:@"ChangePasswordError" code:-10004 userInfo:dictionary];
+        NSError*error=[TXNWPushMessage pushNetWorkRequestErrorWithErrorCode:-10002 value:@"密码不能为空"];
         if (self.completionHandler) self.completionHandler(error, nil);
     }else if (!confirmPassword || confirmPassword.length<=0){
-        NSString *msg=@"确认密码不能为空";
-        NSMutableDictionary *dictionary=[NSMutableDictionary dictionary];
-        [dictionary setObject:msg forKey:@"msg"];
-        NSError *error=[NSError errorWithDomain:@"ChangePasswordError" code:-10005 userInfo:dictionary];
+        NSError*error=[TXNWPushMessage pushNetWorkRequestErrorWithErrorCode:-10003 value:@"确认密码不能为空"];
         if (self.completionHandler) self.completionHandler(error, nil);
     }else if (![password isEqualToString:confirmPassword]){
-        NSString *msg=@"密码不一致";
-        NSMutableDictionary *dictionary=[NSMutableDictionary dictionary];
-        [dictionary setObject:msg forKey:@"msg"];
-        NSError *error=[NSError errorWithDomain:@"ChangePasswordError" code:-10006 userInfo:dictionary];
+        NSError*error=[TXNWPushMessage pushNetWorkRequestErrorWithErrorCode:-10004 value:@"密码不一致"];
         if (self.completionHandler) self.completionHandler(error, nil);
     }else{
         __weak typeof(self) weakSelf=self;

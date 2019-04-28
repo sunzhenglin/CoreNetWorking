@@ -56,6 +56,16 @@ NSString *const TXForgetPasswordCompletionHandlerKey=@"forgetPasswordCompletionH
     [MGJRouter registerURLPattern:TXGetLoginModuleURL toObjectHandler:^id(NSDictionary *routerParameters) {
         // 设置开发类型
         [TXUserDataManager userDataManager].logInInfo.developType = TXDevelopTypeTeacher;
+        // bundle
+        NSBundle *bundle = [TXURBundle bundleWithClass:self resource:TXNulleSchoolTeacherLoginModule_Bundle_Name];
+        // plistPath
+        NSString *plistPath = [bundle pathForResource:@"NulleSmartSchoolErrorCode" ofType:@"plist"];
+        // errorCodeDictionary
+        NSDictionary *errorCodeDictionary =[NSDictionary dictionaryWithContentsOfFile:plistPath];
+        // 添加错误代码
+        [TXNetWorking addErrorCodeDictionary:errorCodeDictionary];
+        // 错误消息名称Key
+        [TXNetWorking setErrorMessageNameKey:@"msg"];
         // 安装键盘管理
         [TXNulleSchoolTeacherLoginModuleRouter installPlugin_IQKeyboardManager];
         // 创建登录模块

@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "AFNetworking.h"
 #import "TXNetModel.h"
+#import "TXNWPushMessage.h"
 #import "TXNWHUD.h"
 #import "TXNetErrorDelegate.h"
 #import "TXNetworkStatusDelegate.h"
@@ -148,8 +149,10 @@ typedef void (^NWCompletionHandler) (NSError *error,id obj);
  *
  *  @param value 错误值
  *  @param key   键值对
+ *
+ *  @return BOOL 是否添加成功
  */
-+ (void)addErrorCodeValue:(NSString*)value forKey:(NSInteger)key;
++ (BOOL)addErrorCodeValue:(NSString*)value forKey:(NSInteger)key;
 
 /** 错误消息名称Key */
 @property (nonatomic,copy)NSString *errorMessageNameKey;
