@@ -1,6 +1,6 @@
 {
   "name": "CoreNetWorkingLib",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "summary": "杭州空灵智能科技有限公司基于AFNetworking所开发的网络请求库,支持get、post、upload等功能.",
   "description": "杭州空灵智能科技有限公司基于AFNetworking所开发的网络请求库,支持get、post、upload、以及网络检测等功能.",
   "homepage": "https://github.com/sunzhenglin/CoreNetWorkingLib",
@@ -13,7 +13,7 @@
   },
   "source": {
     "git": "https://github.com/sunzhenglin/CoreNetWorkingLib.git",
-    "tag": "0.4.0"
+    "tag": "0.4.1"
   },
   "platforms": {
     "ios": "8.0"
