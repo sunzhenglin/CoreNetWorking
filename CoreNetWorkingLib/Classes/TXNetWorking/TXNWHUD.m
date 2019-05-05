@@ -20,7 +20,7 @@
  *  @param showHUDType HUD显示类型
  *  @param info 信息
  */
-+ (void)showHUDWithShowHUDType:(NWShowHUDType)showHUDType info:(NSString* _Nullable)info{
++ (void)showHUDWithShowHUDType:(NWShowHUDType)showHUDType info:(NSString*)info{
     [self HUDDefaultSetting];
     if (showHUDType==NWShowHUDTypeInfo){
         [SVProgressHUD showWithStatus:info];
@@ -48,7 +48,7 @@
  *  @param progress 进度(0到1)
  *  @param info 信息
  */
-+ (void)showHUDWithProgress:(CGFloat)progress info:(NSString* _Nullable)info{
++ (void)showHUDWithProgress:(CGFloat)progress info:(NSString*)info{
     [self HUDDefaultSetting];
     dispatch_async(dispatch_get_main_queue(), ^{
         [SVProgressHUD showProgress:progress status:info];
