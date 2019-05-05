@@ -20,6 +20,7 @@
 {
     [super viewDidLoad];
     self.view.backgroundColor=[UIColor whiteColor];
+    self.title=@"首页";
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(dismiss:)];
     [self.view addGestureRecognizer:tap];
 	// Do any additional setup after loading the view, typically from a nib.
