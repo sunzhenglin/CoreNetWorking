@@ -7,6 +7,7 @@
 
 #import "TXNulleSchoolTeacherLoginModuleRouter.h"
 #import "TXLoginViewController.h"
+#import "IQKeyboardManager.h"
 
 /** 获取纳乐智校教师端登录模块 */
 NSString *const TXGetLoginModuleURL = @"tx://get/nulleSchool/teacher/loginModule";
@@ -23,28 +24,19 @@ NSString *const TXForgetPasswordCompletionHandlerKey=@"forgetPasswordCompletionH
 /** 登录模块 */
 @implementation TXNulleSchoolTeacherLoginModuleRouter
 
-/** appDelegate */
-+ (id)appDelegate{
-    return [UIApplication sharedApplication].delegate;
-}
-
-/** rootViewController */
-+ (UIViewController *)rootViewController{
-    UIWindow *window=[[self appDelegate] window];
-    return window.rootViewController;
-}
-
 /** 获取当前控制器 */
 + (UIViewController*)currentViewController{
-    UIViewController *currentViewController=[self rootViewController];
+    id appDelegate = [UIApplication sharedApplication].delegate;
+    UIWindow *window = [appDelegate window];
+    UIViewController *currentViewController = window.rootViewController;
     while (currentViewController.presentedViewController) {
-        currentViewController=currentViewController.presentedViewController;
+        currentViewController = currentViewController.presentedViewController;
     }
     if ([currentViewController isKindOfClass:[UITabBarController class]]) {
-        currentViewController=[(UITabBarController *)currentViewController selectedViewController];
+        currentViewController = [(UITabBarController *)currentViewController selectedViewController];
     }
     if ([currentViewController isKindOfClass:[UINavigationController class]]) {
-        currentViewController=[(UINavigationController *)currentViewController topViewController];
+        currentViewController = [(UINavigationController *)currentViewController topViewController];
     }
     return currentViewController;
 }
@@ -59,7 +51,7 @@ NSString *const TXForgetPasswordCompletionHandlerKey=@"forgetPasswordCompletionH
         // bundle
         NSBundle *bundle = [TXURBundle bundleWithClass:self resource:TXNulleSchoolTeacherLoginModule_Bundle_Name];
         // plistPath
-        NSString *plistPath = [bundle pathForResource:@"NulleSmartSchoolErrorCode" ofType:@"plist"];
+        NSString *plistPath = [bundle pathForResource:TXNulleSchoolTeacherLoginModule_ErrorCodePlist_Name ofType:@"plist"];
         // errorCodeDictionary
         NSDictionary *errorCodeDictionary =[NSDictionary dictionaryWithContentsOfFile:plistPath];
         // 添加错误代码
@@ -72,6 +64,7 @@ NSString *const TXForgetPasswordCompletionHandlerKey=@"forgetPasswordCompletionH
         TXLoginViewController *loginViewController = [[TXLoginViewController alloc]init];
         loginViewController.loginCompletionHandler = routerParameters[MGJRouterParameterUserInfo][TXLoginCompletionHandlerKey];
         loginViewController.forgetPasswordCompletionHandler = routerParameters[MGJRouterParameterUserInfo][TXForgetPasswordCompletionHandlerKey];
+        // 返回登录模块
         return loginViewController;
     }];
     
@@ -87,6 +80,7 @@ NSString *const TXForgetPasswordCompletionHandlerKey=@"forgetPasswordCompletionH
             parentViewController = parentViewController.presentingViewController;
         }
         [bottomViewController dismissViewControllerAnimated:YES completion:nil];
+        TXLog(@"退出成功");
     }];
 }
 

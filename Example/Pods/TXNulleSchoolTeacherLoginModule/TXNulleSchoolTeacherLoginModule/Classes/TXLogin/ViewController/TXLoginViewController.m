@@ -8,7 +8,6 @@
 
 #import "TXLoginViewController.h"
 #import "TXLoginView.h"
-#import "TXForgetPasswordViewController.h"
 #import "UIViewController+HHTransition.h"
 #import "XHLaunchAd.h"
 
@@ -83,23 +82,27 @@
     [self.view addSubview:self.backgroundImageView];
     
     // logo
-    CGFloat logoImageViewX = tRealLength(25);
-    CGFloat logoImageViewW = viewW-logoImageViewX*2;
     CGFloat logoImageViewH = tRealLength(35);
-    CGFloat logoImageViewY = tRealLength(100);
-    self.logoImageView=[[UIImageView alloc]initWithFrame:CGRectMake(logoImageViewX, logoImageViewY, logoImageViewW, logoImageViewH)];
+    
+    // 登录视图
+    CGFloat margin = tRealLength(25);
+    CGFloat loginViewW = viewW-margin*2;
+    CGFloat loginViewH = tRealLength(400);
+    self.loginView=[[TXLoginView alloc]initWithFrame:CGRectMake(tRealLength(0), tRealLength(0), loginViewW, loginViewH)];
+    CGPoint loginViewCGPoint=CGPointMake(self.backgroundImageView.center.x, self.backgroundImageView.center.y+logoImageViewH);
+    self.loginView.center=loginViewCGPoint;
+    [self.backgroundImageView addSubview:self.loginView];
+    
+    // logo
+    CGFloat logoImageViewW = loginViewW;
+    self.logoImageView=[[UIImageView alloc]init];
     NSString *logoImagePath = [myBundle pathForResource:@"login_logo" ofType:@"png" inDirectory:nil];
     UIImage *logoImage = [UIImage imageWithContentsOfFile:logoImagePath];
     self.logoImageView.image = logoImage;
+    CGFloat logoImageViewY = self.loginView.center.y-(loginViewH/2)-logoImageViewH-(logoImageViewH/2);
+    CGFloat logoImageViewX = margin;
+    self.logoImageView.frame = CGRectMake(logoImageViewX, logoImageViewY, logoImageViewW, logoImageViewH);
     [self.backgroundImageView addSubview:self.logoImageView];
-    
-    // 登录视图
-    CGFloat loginViewX = logoImageViewX;
-    CGFloat loginViewY = CGRectGetMaxY(self.logoImageView.frame)+tRealLength(30);
-    CGFloat loginViewW = viewW-loginViewX*2;
-    CGFloat loginViewH = viewH-loginViewY-logoImageViewY;
-    self.loginView=[[TXLoginView alloc]initWithFrame:CGRectMake(loginViewX, loginViewY, loginViewW, loginViewH)];
-    [self.backgroundImageView addSubview:self.loginView];
     
 }
 
@@ -112,7 +115,7 @@
             [TXLoginViewController setupRequestHeader];
             // 跳转到首页
             CGPoint point = [self.loginView convertPoint:self.loginView.login.center toView:self.backgroundImageView];
-            [self hh_presentCircleVC:self.loginCompletionHandler(nil,[TXUserDataManager userDataManager]) point:point completion:nil];
+            [self hh_presentCircleVC:self.loginCompletionHandler() point:point completion:nil];
         }
     }
 }
@@ -157,7 +160,6 @@
                 // 错误提示
                 [TXNetWorking showHUDWithShowHUDType:NWShowHUDTypeFailureInfo info:error.userInfo[@"msg"]];
                 [weakSelf.loginView.login failedAnimationWithCompletion:^{}];
-                if (weakSelf.loginCompletionHandler) weakSelf.loginCompletionHandler(error,obj);
             }
         }else if (weakSelf.loginViewModel.operationType==LROperationTypeGetUserInfo){
             if (!error) {
@@ -169,7 +171,7 @@
                     if (weakSelf.loginCompletionHandler) {
                         // 技术点1 (将像素point由point所在视图转换到目标视图view中，返回在目标视图view中的像素值)
                         CGPoint point = [weakSelf.loginView convertPoint:weakSelf.loginView.login.center toView:weakSelf.backgroundImageView];
-                        [weakSelf hh_presentCircleVC:weakSelf.loginCompletionHandler(error,[TXUserDataManager userDataManager]) point:point completion:nil];
+                        [weakSelf hh_presentCircleVC:weakSelf.loginCompletionHandler() point:point completion:nil];
                     }
                 }];
             }else{
@@ -178,7 +180,6 @@
                 // 错误提示
                 [TXNetWorking showHUDWithShowHUDType:NWShowHUDTypeFailureInfo info:error.userInfo[@"msg"]];
                 [weakSelf.loginView.login failedAnimationWithCompletion:^{}];
-                if (weakSelf.loginCompletionHandler) weakSelf.loginCompletionHandler(error,obj);
             }
         }
     };
@@ -190,6 +191,7 @@
     
     // 忘记密码
     self.loginView.forgetPasswordCompletionHandler = ^(id  _Nonnull obj) {
+        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
         TXForgetPasswordViewController *forgetPasswordViewController = [TXForgetPasswordViewController new];
         forgetPasswordViewController.forgetPasswordCompletionHandler = weakSelf.forgetPasswordCompletionHandler;
         [weakSelf hh_presentBackScaleVC:forgetPasswordViewController height:tRealLength(300) completion:nil];

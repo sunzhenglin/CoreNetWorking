@@ -14,12 +14,10 @@
 #import "TXAdapter.h"
 #import "TXCoreData.h"
 #import "CoreNetworking.h"
-#import "MGJRouterKit.h"
-#import "IQKeyboardManager.h"
+#import "MGJRouter.h"
 
 // 该库头文件
 #import "TXURBundle.h"
-#import "TXNulleSchoolTeacherLoginModuleRouter.h"
 
 // 颜色
 #ifdef TXLFRGBA
@@ -27,8 +25,21 @@
 #define TXLFRGBA(r, g, b, a) [UIColor colorWithRed:r/255.f green:g/255.f blue:b/255.f alpha:a]
 #endif
 
+// 打印日志
+#ifdef TXLog
+#else
+#if DEBUG
+#define TXLog(s, ... ) NSLog( @"<FileName:%@ InThe:%dRow> Log:%@", [[NSString stringWithUTF8String:__FILE__] lastPathComponent], __LINE__, [NSString stringWithFormat:(s), ##__VA_ARGS__] )
+#else
+#define TXLog(s, ... )
+#endif
+#endif
+
 // Bundle文件名
 static NSString *const TXNulleSchoolTeacherLoginModule_Bundle_Name =@"TXNulleSchoolTeacherLoginModule";
+
+// 错误码Plist文件名
+static NSString *const TXNulleSchoolTeacherLoginModule_ErrorCodePlist_Name =@"NulleSmartSchoolErrorCode";
 
 // 服务器地址
 #ifdef SERVER_IP

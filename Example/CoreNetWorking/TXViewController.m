@@ -7,7 +7,8 @@
 //
 
 #import "TXViewController.h"
-#import "MGJRouterKit.h"
+#import <MGJRouter.h>
+#import <TXNulleSchoolTeacherLoginModuleRouter.h>
 
 @interface TXViewController ()
 
@@ -25,7 +26,7 @@
 }
 
 -(void)dismiss:(UITapGestureRecognizer *)sender{
-    [MGJRouter openURL:@"tx://signOut/nulleSchool/teacher"];
+    [MGJRouter openURL:TXSignOutURL];
 }
 
 - (void)didReceiveMemoryWarning

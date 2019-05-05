@@ -25,7 +25,14 @@ typedef NS_ENUM(NSInteger,NWShowHUDType){
  *  @param showHUDType HUD显示类型
  *  @param info 信息
  */
-+ (void)showHUDWithShowHUDType:(NWShowHUDType)showHUDType info:(NSString*)info;
++ (void)showHUDWithShowHUDType:(NWShowHUDType)showHUDType info:(NSString* _Nullable)info;
+
+/**
+ *  显示进度HUD
+ *  @param progress 进度(0到1)
+ *  @param info 信息
+ */
++ (void)showHUDWithProgress:(CGFloat)progress info:(NSString* _Nullable)info;
 
 /** 消除HUD */
 + (void)dismissHUD;

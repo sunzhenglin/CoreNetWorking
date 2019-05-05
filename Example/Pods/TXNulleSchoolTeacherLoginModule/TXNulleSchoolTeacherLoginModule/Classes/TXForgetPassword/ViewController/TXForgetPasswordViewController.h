@@ -9,10 +9,12 @@
 #import <UIKit/UIKit.h>
 
 NS_ASSUME_NONNULL_BEGIN
+/** 修改密码成功回调 */
+typedef void (^TXFPCompletionHandler) (void);
 /** 忘记密码 */
 @interface TXForgetPasswordViewController : UIViewController
-/** 完成回调 */
-@property (nonatomic,copy)NWCompletionHandler forgetPasswordCompletionHandler;
+/** 修改密码成功回调*/
+@property (nonatomic,copy)TXFPCompletionHandler forgetPasswordCompletionHandler;
 @end
 
 NS_ASSUME_NONNULL_END

@@ -65,7 +65,7 @@ typedef NS_ENUM(NSInteger,LRViewFunctionType){
     
     CGFloat viewW = self.view.frame.size.width;
     CGFloat viewH = self.view.frame.size.height;
-    
+
     // 背景图
     CGFloat backgroundImageViewX = tRealLength(0);
     CGFloat backgroundImageViewY = tRealLength(0);
@@ -126,6 +126,7 @@ typedef NS_ENUM(NSInteger,LRViewFunctionType){
 
 /** 向下事件 */
 - (void)downEvent:(id)sender{
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -138,20 +139,18 @@ typedef NS_ENUM(NSInteger,LRViewFunctionType){
                 // 验证码获取成功
                 [weakSelf.inputPhoneNumberView.next succeedAnimationWithCompletion:^{
                     weakSelf.viewFunctionType=LRViewFunctionTypeInputVerificationCode;
-                    if (weakSelf.forgetPasswordCompletionHandler) weakSelf.forgetPasswordCompletionHandler(error, obj);
                 }];
             }else{
                 // 验证码获取失败
                 [TXNetWorking showHUDWithShowHUDType:NWShowHUDTypeFailureInfo info:error.userInfo[@"msg"]];
                 [weakSelf.inputPhoneNumberView.next failedAnimationWithCompletion:^{}];
-                if (weakSelf.forgetPasswordCompletionHandler) weakSelf.forgetPasswordCompletionHandler(error, obj);
             }
         }else if (weakSelf.loginViewModel.operationType==LROperationTypeChangePassword){
             if (!error) {
                 // 修改成功
                 [weakSelf.inputPasswordView.next succeedAnimationWithCompletion:^{
                     [TXNetWorking showHUDWithShowHUDType:NWShowHUDTypeSuccessInfo info:@"密码修改成功"];
-                     if (weakSelf.forgetPasswordCompletionHandler) weakSelf.forgetPasswordCompletionHandler(error, weakSelf.changePasswordModel);
+                     if (weakSelf.forgetPasswordCompletionHandler) weakSelf.forgetPasswordCompletionHandler();
                     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.128 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                         [weakSelf dismissViewControllerAnimated:YES completion:nil];
                     });
@@ -160,7 +159,6 @@ typedef NS_ENUM(NSInteger,LRViewFunctionType){
                 // 修改失败
                 [TXNetWorking showHUDWithShowHUDType:NWShowHUDTypeFailureInfo info:error.userInfo[@"msg"]];
                 [weakSelf.inputPasswordView.next failedAnimationWithCompletion:^{}];
-                if (weakSelf.forgetPasswordCompletionHandler) weakSelf.forgetPasswordCompletionHandler(error, obj);
             }
         }
     };
@@ -186,8 +184,8 @@ typedef NS_ENUM(NSInteger,LRViewFunctionType){
     
     // 输入密码 下一步
     self.inputPasswordView.nextCompletionHandler = ^(id  _Nonnull obj) {
-        weakSelf.changePasswordModel.password=self.inputPasswordView.password.text;
-        weakSelf.changePasswordModel.confirmPassword=self.inputPasswordView.confirmPassword.text;
+        weakSelf.changePasswordModel.password=weakSelf.inputPasswordView.password.text;
+        weakSelf.changePasswordModel.confirmPassword=weakSelf.inputPasswordView.confirmPassword.text;
         // 修改密码
         [weakSelf.loginViewModel changePasswordWithAccount:weakSelf.changePasswordModel.account verificationCode:weakSelf.changePasswordModel.verificationCode password:weakSelf.changePasswordModel.password confirmPassword:weakSelf.changePasswordModel.confirmPassword];
     };
@@ -317,6 +315,11 @@ typedef NS_ENUM(NSInteger,LRViewFunctionType){
     CGFloat inputPasswordViewW = inputPhoneNumberViewW;
     CGFloat inputPasswordViewH = inputPhoneNumberViewH;
     self.inputPasswordView.frame=CGRectMake(inputPasswordViewX, inputPasswordViewY, inputPasswordViewW, inputPasswordViewH);
+}
+
+/** dealloc */
+- (void)dealloc{
+    TXLog(@"%s",__func__);
 }
 
 /*

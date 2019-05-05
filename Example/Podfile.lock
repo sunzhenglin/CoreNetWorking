@@ -20,19 +20,17 @@ PODS:
     - TXModel (~> 1.0.1)
   - FLAnimatedImage (1.0.12)
   - HHTransition (1.2.0)
-  - IQKeyboardManager (6.2.1)
+  - IQKeyboardManager (6.3.0)
   - MGJRouter (0.10.0)
-  - MGJRouterKit (0.1.2):
-    - MGJRouter
   - SVProgressHUD (2.2.5)
   - TXAdapter (0.0.2)
   - TXCoreData (0.2.2)
   - TXModel (1.0.1)
-  - TXNulleSchoolTeacherLoginModule (0.2.0):
+  - TXNulleSchoolTeacherLoginModule (0.2.7):
     - CoreNetWorkingLib
     - HHTransition
     - IQKeyboardManager
-    - MGJRouterKit
+    - MGJRouter
     - TXAdapter
     - TXCoreData
     - XHLaunchAd
@@ -52,7 +50,6 @@ SPEC REPOS:
     - HHTransition
     - IQKeyboardManager
     - MGJRouter
-    - MGJRouterKit
     - SVProgressHUD
     - TXAdapter
     - TXModel
@@ -69,14 +66,13 @@ SPEC CHECKSUMS:
   CoreNetWorkingLib: 6076d50bbbd52205ee3998bdeb9e6bc4adf6e908
   FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
   HHTransition: 35c278fbe8374cdf0931a805aef066d52256a897
-  IQKeyboardManager: 964638372b4a61892cc74fdfa6fd26de8c9464a2
+  IQKeyboardManager: 2ca9d64893247556f53523dcd8d78641f0ba7c23
   MGJRouter: 15d94541eb2cc81eff7d577337288feb7ae9575f
-  MGJRouterKit: ea405f9da960dff5bca8dfbe31159a01f49bb2a8
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
   TXAdapter: 6b6681d96c9656ae63b4e1e9b6990f73a027f0fe
   TXCoreData: 83608e1691b4f9df565ce36077d65d620b1d5a6b
   TXModel: 116bca2566ae582e273af09448af4a617b1bf050
-  TXNulleSchoolTeacherLoginModule: 83520ad151b8be0fe27a316d360e8a204098ea37
+  TXNulleSchoolTeacherLoginModule: d833e4bcc5e9a90f4c56527fbf92d3c48cadb73f
   XHLaunchAd: 45048592af01aa501c9d2d0c45e95ca74c4d0596
 
 PODFILE CHECKSUM: 945829b47b0d0cbc512c87af6054ec9947f94f39

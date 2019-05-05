@@ -26,23 +26,32 @@ FOUNDATION_EXPORT NSString *const TXForgetPasswordCompletionHandlerKey;
  *
  *  操作说明
  *
-    // 创建参数
-    NSMutableDictionary *parameters=[NSMutableDictionary dictionary];
-    // 定义登录回调代码块
-    typedef UIViewController *_Nonnull(^TXLICompletionHandler) (NSError *_Nullable error  ,id _Nullable obj);
-    // 登录回调
-    TXLICompletionHandler loginCompletionHandler = ^(NSError *_Nullable error  ,id _Nullable obj){
+    // 创建登录模块用户信息
+    NSMutableDictionary *userInfo=[NSMutableDictionary dictionary];
+    // 定义登录成功回调
+    typedef UIViewController *_Nonnull(^TXLICompletionHandler) (void);
+    // 登录成功回调
+    TXLICompletionHandler loginCompletionHandler = ^ {
+    NSLog(@"登录成功。");
+    // 创建首页
     UINavigationController *navigationController=[[UINavigationController alloc]initWithRootViewController:[TXViewController new]];
+    // 返回首页
     return navigationController;
     };
+    // 定义修改密码成功回调
+    typedef void (^TXFPCompletionHandler) (void);
     // 忘记密码回调
-    NWCompletionHandler forgetPasswordCompletionHandler = ^ (NSError *error,id obj){
+    TXFPCompletionHandler forgetPasswordCompletionHandler = ^ {
+    NSLog(@"修改密码成功。");
     };
-    [parameters setValue:loginCompletionHandler forKey:@"loginCompletionHandler"];
-    [parameters setValue:forgetPasswordCompletionHandler forKey:@"forgetPasswordCompletionHandler"];
-    self.window.rootViewController = [MGJRouter objectForURL:@"tx://get/nulleSchool/teacher/loginModule" withUserInfo:parameters];
+    // 设置登录成功回调
+    [userInfo setValue:loginCompletionHandler forKey:@"loginCompletionHandler"];
+    // 设置忘记密码回调
+    [userInfo setValue:forgetPasswordCompletionHandler forKey:@"forgetPasswordCompletionHandler"];
+    // 设置根视图
+    self.window.rootViewController = [MGJRouter objectForURL:@"tx://get/nulleSchool/teacher/loginModule" withUserInfo:userInfo];
+    // 设置为主窗口并显示出来
     [self.window makeKeyAndVisible];
- *
 */
 
 @interface TXNulleSchoolTeacherLoginModuleRouter : NSObject

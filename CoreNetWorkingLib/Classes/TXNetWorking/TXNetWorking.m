@@ -291,13 +291,45 @@
  *  @param showHUDType HUD显示类型
  *  @param info 信息
  */
-+ (void)showHUDWithShowHUDType:(NWShowHUDType)showHUDType info:(NSString*)info{
++ (void)showHUDWithShowHUDType:(NWShowHUDType)showHUDType info:(NSString* _Nullable)info{
     [TXNWHUD showHUDWithShowHUDType:showHUDType info:info];
+}
+
+/**
+ *  显示进度HUD
+ *  @param progress 进度(0到1)
+ *  @param info 信息
+ */
++ (void)showHUDWithProgress:(CGFloat)progress info:(NSString* _Nullable)info{
+    [TXNWHUD showHUDWithProgress:progress info:info];
 }
 
 /** 消除HUD */
 + (void)dismissHUD{
     [TXNWHUD dismissHUD];
+}
+
+#pragma mark- 推送
+
+/**
+ *  推送错误
+ *
+ *  @param code 错误代码
+ *  @param completionHandler 完成处理程序
+ */
++ (void)pushErrorWithCode:(NSInteger)code completionHandler:(NWCompletionHandler)completionHandler{
+    NSString *errorMessage=[self netWorkingManager].errorCodeDictionary[[NSString stringWithFormat:@"%ld",code]];
+    NSError*error=[TXNWPushMessage pushNetWorkRequestErrorWithErrorCode:code value:errorMessage];
+    if (completionHandler) completionHandler(error,nil);
+}
+
+/**
+ *  推送成功
+ *
+ *  @param completionHandler 完成处理程序
+ */
++ (void)pushSuccessWithObj:(id)obj completionHandler:(NWCompletionHandler)completionHandler{
+    if (completionHandler) completionHandler(nil,obj);
 }
 
 #pragma mark- 网络请求
@@ -347,7 +379,7 @@
         if (netModel.code==[self netWorkingManager].code) {
             [self pushSuccessWithObj:netModel completionHandler:completionHandler];
         }else{
-             [self pushErrorWithCode:netModel.code completionHandler:completionHandler];
+            [self pushErrorWithCode:netModel.code completionHandler:completionHandler];
         }
         if (showHUD) [TXNetWorking dismissHUD];
         TXNETLog(@"get请求==>url:%@ responseObject:%@",strURL,responseObject);
@@ -370,12 +402,12 @@
  */
 + (void)uploadImage:(NSString *)strURL
               image:(UIImage *)image
-               fileName:(NSString *)fileName
-                   name:(NSString *)name
-               mimeType:(NSString *)mimeType
-             parameters:(NSDictionary *)parameters
-                showHUD:(BOOL)showHUD
-      completionHandler:(NWCompletionHandler)completionHandler{
+           fileName:(NSString *)fileName
+               name:(NSString *)name
+           mimeType:(NSString *)mimeType
+         parameters:(NSDictionary *)parameters
+            showHUD:(BOOL)showHUD
+  completionHandler:(NWCompletionHandler)completionHandler{
     [self uploadImage:strURL images:@[image] fileName:fileName name:name mimeType:mimeType parameters:parameters showHUD:showHUD completionHandler:completionHandler];
 }
 
@@ -413,7 +445,7 @@
 + (void)uploadImage:(NSString *)strURL
              images:(NSArray<NSArray<UIImage*>*>*)images
            fileName:(NSString *)fileName
-               names:(NSArray<NSString*> *)names
+              names:(NSArray<NSString*> *)names
            mimeType:(NSString *)mimeType
          parameters:(NSDictionary *)parameters
             showHUD:(BOOL)showHUD
@@ -444,7 +476,7 @@
         if (netModel.code==[self netWorkingManager].code) {
             [self pushSuccessWithObj:netModel completionHandler:completionHandler];
         }else{
-             [self pushErrorWithCode:netModel.code completionHandler:completionHandler];
+            [self pushErrorWithCode:netModel.code completionHandler:completionHandler];
         }
         if (showHUD) [TXNetWorking dismissHUD];
         TXNETLog(@"上传图片==>url:%@ responseObject:%@",strURL,responseObject);
@@ -487,7 +519,7 @@
  *  @param showHUD 是否显示HUD
  */
 + (void)uploadFile:(NSString*)strURL
-           fileURLs:(NSArray<NSURL*>*)fileURLs
+          fileURLs:(NSArray<NSURL*>*)fileURLs
           fileName:(NSString*)fileName
               name:(NSString*)name
           mimeType:(NSString*)mimeType
@@ -537,7 +569,7 @@
         if (netModel.code==[self netWorkingManager].code) {
             [self pushSuccessWithObj:netModel completionHandler:completionHandler];
         }else{
-             [self pushErrorWithCode:netModel.code completionHandler:completionHandler];
+            [self pushErrorWithCode:netModel.code completionHandler:completionHandler];
         }
         if (showHUD) [TXNetWorking dismissHUD];
         TXNETLog(@"上传文件==>url:%@ responseObject:%@",strURL,responseObject);
@@ -546,29 +578,6 @@
         if (showHUD) [TXNetWorking dismissHUD];
         TXNETLog(@"上传文件==>url:%@ error:%@",strURL,error);
     }];
-}
-
-#pragma mark- 推送
-
-/**
- *  推送错误
- *
- *  @param code 错误代码
- *  @param completionHandler 完成处理程序
- */
-+ (void)pushErrorWithCode:(NSInteger)code completionHandler:(NWCompletionHandler)completionHandler{
-    NSString *errorMessage=[self netWorkingManager].errorCodeDictionary[[NSString stringWithFormat:@"%ld",code]];
-    NSError*error=[TXNWPushMessage pushNetWorkRequestErrorWithErrorCode:code value:errorMessage];
-    if (completionHandler) completionHandler(error,nil);
-}
-
-/**
- *  推送成功
- *
- *  @param completionHandler 完成处理程序
- */
-+ (void)pushSuccessWithObj:(id)obj completionHandler:(NWCompletionHandler)completionHandler{
-    if (completionHandler) completionHandler(nil,obj);
 }
 
 @end

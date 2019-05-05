@@ -8,9 +8,9 @@
 
 
 @import UIKit;
+#import <MGJRouter.h>
 #import <TXNulleSchoolTeacherLoginModuleRouter.h>
 #import "TXViewController.h"
-#import <MGJRouterKit.h>
 #import "TXNetWorking.h"
 
 @interface TXAppDelegate : UIResponder <UIApplicationDelegate,TXNetWorkRequestErrorDelegate>

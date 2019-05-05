@@ -7,16 +7,17 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "TXForgetPasswordViewController.h"
 
 NS_ASSUME_NONNULL_BEGIN
 /** 登录成功回调 */
-typedef UIViewController *_Nonnull(^TXLICompletionHandler) (NSError *_Nullable error  ,id _Nullable obj);
+typedef UIViewController *_Nonnull(^TXLICompletionHandler) (void);
 /** 登录控制视图 */
 @interface TXLoginViewController : UIViewController
 /** 登录完成回调 */
 @property (nonatomic,copy)TXLICompletionHandler loginCompletionHandler;
-/** 忘记密码回调 */
-@property (nonatomic,copy)NWCompletionHandler forgetPasswordCompletionHandler;
+/** 修改密码成功回调*/
+@property (nonatomic,copy)TXFPCompletionHandler forgetPasswordCompletionHandler;
 /** 设置请求头 */
 + (void)setupRequestHeader;
 /** 移除请求头 */

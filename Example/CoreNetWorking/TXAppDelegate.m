@@ -11,34 +11,36 @@
 @implementation TXAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions{
-    
-    NSBundle *bundle = [NSBundle mainBundle];
-    NSString *path = [bundle pathForResource:@"NulleSmartSchoolErrorCode" ofType:@"plist"];
-    NSDictionary *dict =[NSDictionary dictionaryWithContentsOfFile:path];
-    [TXNetWorking addErrorCodeDictionary:dict];
-    [TXNetWorking setErrorMessageNameKey:@"msg"];
-    
-    [TXNetWorking addErrorCodeValue:@"未找到科目" forKey:4064];
-    [TXNetWorking addErrorCodeValue:@"未找到科目" forKey:4064];
-    [TXNetWorking addErrorCodeValue:@"未找到科目" forKey:4064];
-    [TXNetWorking addErrorCodeValue:@"未找到科目" forKey:4064];
-    [TXNetWorking addErrorCodeValue:@"Uface注册失败" forKey:4029];
-    
+    // 网络错误代码
     self.netErrorDelegate=[TXNetErrorDelegate new];
+    // 网络错误代码代理
     self.netErrorDelegate.delegate=self;
-    
-    // 创建参数
-    NSMutableDictionary *parameters=[NSMutableDictionary dictionary];
-    // 定义登录回调代码块
-    typedef UIViewController *_Nonnull(^TXLICompletionHandler) (NSError *_Nullable error  ,id _Nullable obj);
-    // 登录回调
-    TXLICompletionHandler loginCompletionHandler = ^(NSError *_Nullable error  ,id _Nullable obj){
+    // 创建登录模块用户信息
+    NSMutableDictionary *userInfo=[NSMutableDictionary dictionary];
+    // 定义登录成功回调
+    typedef UIViewController *_Nonnull(^TXLICompletionHandler) (void);
+    // 登录成功回调
+    TXLICompletionHandler loginCompletionHandler = ^ {
+        NSLog(@"登录成功。");
+        // 创建首页
         UINavigationController *navigationController=[[UINavigationController alloc]initWithRootViewController:[TXViewController new]];
+        // 返回首页
         return navigationController;
     };
-    [parameters setValue:loginCompletionHandler forKey:@"loginCompletionHandler"];
-    self.window.rootViewController=[MGJRouter objectForURL:TXGetLoginModuleURL withUserInfo:parameters];
-    
+    // 定义修改密码成功回调
+    typedef void (^TXFPCompletionHandler) (void);
+    // 忘记密码回调
+    TXFPCompletionHandler forgetPasswordCompletionHandler = ^ {
+        NSLog(@"修改密码成功。");
+    };
+    // 设置登录成功回调
+    [userInfo setValue:loginCompletionHandler forKey:TXLoginCompletionHandlerKey];
+    // 设置忘记密码回调
+    [userInfo setValue:forgetPasswordCompletionHandler forKey:TXForgetPasswordCompletionHandlerKey];
+    // 设置根视图
+    self.window.rootViewController = [MGJRouter objectForURL:TXGetLoginModuleURL withUserInfo:userInfo];
+    // 设置为主窗口并显示出来
+    [self.window makeKeyAndVisible];
     // Override point for customization after application launch.
     return YES;
 }
@@ -46,8 +48,6 @@
 /** 错误类型 */
 - (void)netErrorDelegate:(TXNetErrorDelegate*)netErrorDelegate errorCode:(NSInteger)errorCode errorCodeString:(NSString*)errorCodeString{
     NSLog(@"errorCode:%@  errorCodeString:%@",[NSString stringWithFormat:@"%ld",(long)errorCode],errorCodeString);
-    NSLog(@"-------->value:%@",[TXNetErrorDelegate errorCodeKeyForValue:errorCode]);
-    NSLog(@"-------->key:%ld",(long)[TXNetErrorDelegate errorCodeValueForKey:errorCodeString]);
 }
 
 
