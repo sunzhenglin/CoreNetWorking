@@ -7,8 +7,6 @@
 //
 
 #import "TXViewController.h"
-#import <MGJRouter.h>
-#import <TXNulleSchoolTeacherLoginModuleRouter.h>
 
 @interface TXViewController ()
 
@@ -19,15 +17,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.view.backgroundColor=[UIColor whiteColor];
     self.title=@"首页";
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(dismiss:)];
-    [self.view addGestureRecognizer:tap];
 	// Do any additional setup after loading the view, typically from a nib.
-}
-
--(void)dismiss:(UITapGestureRecognizer *)sender{
-    [MGJRouter openURL:TXSignOutURL];
 }
 
 - (void)didReceiveMemoryWarning

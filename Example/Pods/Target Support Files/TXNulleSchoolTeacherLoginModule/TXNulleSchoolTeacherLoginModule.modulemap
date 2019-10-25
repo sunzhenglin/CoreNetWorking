@@ -1,6 +1,0 @@
-framework module TXNulleSchoolTeacherLoginModule {
-  umbrella header "TXNulleSchoolTeacherLoginModule-umbrella.h"
-
-  export *
-  module * { export * }
-}

@@ -13,8 +13,9 @@
 + (void)HUDDefaultSetting{
     [SVProgressHUD setDefaultStyle:SVProgressHUDStyleLight];
     [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeBlack];
-    [SVProgressHUD setMinimumDismissTimeInterval:1.0];
+    [SVProgressHUD setMinimumDismissTimeInterval:2.0];
 }
+
 /**
  *  显示HUD
  *  @param showHUDType HUD显示类型
@@ -23,7 +24,9 @@
 + (void)showHUDWithShowHUDType:(NWShowHUDType)showHUDType info:(NSString*)info{
     [self HUDDefaultSetting];
     if (showHUDType==NWShowHUDTypeInfo){
-        [SVProgressHUD showWithStatus:info];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [SVProgressHUD showWithStatus:info];
+        });
     }else if (showHUDType==NWShowHUDTypeCaveatInfo){
         dispatch_async(dispatch_get_main_queue(), ^{
             [SVProgressHUD showInfoWithStatus:info];
@@ -57,7 +60,7 @@
 
 /** 消除HUD */
 + (void)dismissHUD{
-    dispatch_async(dispatch_get_main_queue(), ^{
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.512 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [SVProgressHUD dismiss];
     });
 }

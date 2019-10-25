@@ -11,45 +11,9 @@
 @implementation TXAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions{
-    // 网络错误代码
-    self.netErrorDelegate=[TXNetErrorDelegate new];
-    // 网络错误代码代理
-    self.netErrorDelegate.delegate=self;
-    // 创建登录模块用户信息
-    NSMutableDictionary *userInfo=[NSMutableDictionary dictionary];
-    // 定义登录成功回调
-    typedef UIViewController *_Nonnull(^TXLICompletionHandler) (void);
-    // 登录成功回调
-    TXLICompletionHandler loginCompletionHandler = ^ {
-        NSLog(@"登录成功。");
-        // 创建首页
-        UINavigationController *navigationController=[[UINavigationController alloc]initWithRootViewController:[TXViewController new]];
-        // 返回首页
-        return navigationController;
-    };
-    // 定义修改密码成功回调
-    typedef void (^TXFPCompletionHandler) (void);
-    // 忘记密码回调
-    TXFPCompletionHandler forgetPasswordCompletionHandler = ^ {
-        NSLog(@"修改密码成功。");
-    };
-    // 设置登录成功回调
-    [userInfo setValue:loginCompletionHandler forKey:TXLoginCompletionHandlerKey];
-    // 设置忘记密码回调
-    [userInfo setValue:forgetPasswordCompletionHandler forKey:TXForgetPasswordCompletionHandlerKey];
-    // 设置根视图
-    self.window.rootViewController = [MGJRouter objectForURL:TXGetLoginModuleURL withUserInfo:userInfo];
-    // 设置为主窗口并显示出来
-    [self.window makeKeyAndVisible];
     // Override point for customization after application launch.
     return YES;
 }
-
-/** 错误类型 */
-- (void)netErrorDelegate:(TXNetErrorDelegate*)netErrorDelegate errorCode:(NSInteger)errorCode errorCodeString:(NSString*)errorCodeString{
-    NSLog(@"errorCode:%@  errorCodeString:%@",[NSString stringWithFormat:@"%ld",(long)errorCode],errorCodeString);
-}
-
 
 - (void)applicationWillResignActive:(UIApplication *)application
 {

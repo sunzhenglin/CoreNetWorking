@@ -14,48 +14,21 @@ PODS:
   - AFNetworking/Serialization (3.2.1)
   - AFNetworking/UIKit (3.2.1):
     - AFNetworking/NSURLSession
-  - CoreNetWorkingLib (0.4.2):
-    - AFNetworking (~> 3.2.1)
-    - SVProgressHUD (~> 2.2.5)
-    - TXModel (~> 1.0.1)
-  - FLAnimatedImage (1.0.12)
-  - HHTransition (1.2.0)
-  - IQKeyboardManager (6.3.0)
-  - MGJRouter (0.10.0)
+  - CoreNetWorkingLib (0.4.3):
+    - AFNetworking (= 3.2.1)
+    - SVProgressHUD (= 2.2.5)
+    - TXModel (= 1.0.1)
   - SVProgressHUD (2.2.5)
-  - TXAdapter (0.0.2)
-  - TXCoreData (0.2.2)
   - TXModel (1.0.1)
-  - TXNulleSchoolTeacherLoginModule (0.2.7):
-    - CoreNetWorkingLib
-    - HHTransition
-    - IQKeyboardManager
-    - MGJRouter
-    - TXAdapter
-    - TXCoreData
-    - XHLaunchAd
-  - XHLaunchAd (3.9.8):
-    - FLAnimatedImage (~> 1.0.12)
 
 DEPENDENCIES:
   - CoreNetWorkingLib (from `../`)
-  - TXNulleSchoolTeacherLoginModule
 
 SPEC REPOS:
-  https://gitee.com/xtzPioneer/TXSpec.git:
-    - TXNulleSchoolTeacherLoginModule
   https://github.com/cocoapods/specs.git:
     - AFNetworking
-    - FLAnimatedImage
-    - HHTransition
-    - IQKeyboardManager
-    - MGJRouter
     - SVProgressHUD
-    - TXAdapter
     - TXModel
-    - XHLaunchAd
-  "https://sunzhenglin:sunlin009@gitee.com/sunzhenglin/txRepos.git":
-    - TXCoreData
 
 EXTERNAL SOURCES:
   CoreNetWorkingLib:
@@ -63,18 +36,10 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   AFNetworking: b6f891fdfaed196b46c7a83cf209e09697b94057
-  CoreNetWorkingLib: 5ecc04691c8003f46886390389cc753b56a06509
-  FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
-  HHTransition: 35c278fbe8374cdf0931a805aef066d52256a897
-  IQKeyboardManager: 2ca9d64893247556f53523dcd8d78641f0ba7c23
-  MGJRouter: 15d94541eb2cc81eff7d577337288feb7ae9575f
+  CoreNetWorkingLib: 30cca198f716da80cdd23b5f5929c1b78d5b5cd8
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
-  TXAdapter: 6b6681d96c9656ae63b4e1e9b6990f73a027f0fe
-  TXCoreData: 83608e1691b4f9df565ce36077d65d620b1d5a6b
   TXModel: 116bca2566ae582e273af09448af4a617b1bf050
-  TXNulleSchoolTeacherLoginModule: d833e4bcc5e9a90f4c56527fbf92d3c48cadb73f
-  XHLaunchAd: 45048592af01aa501c9d2d0c45e95ca74c4d0596
 
-PODFILE CHECKSUM: 945829b47b0d0cbc512c87af6054ec9947f94f39
+PODFILE CHECKSUM: 1008a0c8a80cda514e4bd1bfa28fe937fe2a52c3
 
-COCOAPODS: 1.6.1
+COCOAPODS: 1.7.5
